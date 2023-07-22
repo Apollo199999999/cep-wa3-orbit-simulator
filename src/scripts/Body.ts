@@ -243,9 +243,10 @@ export class Body {
 
             explosionGif.size(gifWidth, gifHeight);
             explosionGif.addClass("select-none");
-            //Since this element is positioned absolutely, remember to take into account the left control panel width!
+
+            //Position the explosionGif 
             explosionGif.position(
-                collisionX + SimulationVariables.CONTROL_PANEL_WIDTH - gifWidth / 2,
+                collisionX - gifWidth / 2,
                 collisionY - gifHeight / 2
             );
 
