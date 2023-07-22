@@ -1,12 +1,12 @@
 <script lang="ts">
-  export let toolTipText = "";
-  export let btnColor = "";
-  export let svgIconPath = "";
-  export let clickEvent: void;
+  export let toolTipText: string = "";
+  export let btnColor: string = "";
+  export let svgIconPath: string = "";
+  export let onClick: any;
 </script>
 
 <div class="tooltip tooltip-bottom" data-tip={toolTipText}>
-  <button class="btn btn-square {btnColor}" on:click={() => {clickEvent}}>
+  <button class="btn btn-square {btnColor}" on:click={onClick}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"

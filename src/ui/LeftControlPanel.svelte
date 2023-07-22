@@ -9,6 +9,7 @@
 <div
   id="controlsPage"
   class="bg-base-100 flex-1 p-4 max-h-screen overflow-y-auto overflow-x-hidden">
+
   <p class="text-xl font-semibold">Simulation Controls</p>
 
   <!-- Simulation play/pause panel -->
@@ -18,36 +19,36 @@
       toolTipText="Reset"
       btnColor="btn-neutral"
       svgIconPath="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
-      clickEvent={LeftControlPanelEvents.resetBtnClicked()} />
+      onClick={(event) => LeftControlPanelEvents.resetBtnClicked(event.currentTarget)} />
 
     <!-- Play button -->
     <IconButton
       toolTipText="Play"
       btnColor="btn-primary"
       svgIconPath="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
-      clickEvent={LeftControlPanelEvents.playBtnClicked()} />
+      onClick={(event) => LeftControlPanelEvents.playBtnClicked(event.currentTarget)}/>
 
     <!-- Pause button -->
     <IconButton
       toolTipText="Pause"
       btnColor="btn-neutral"
       svgIconPath="M15.75 5.25v13.5m-7.5-13.5v13.5"
-      clickEvent={LeftControlPanelEvents.pauseBtnClicked()} />
+      onClick={(event) => LeftControlPanelEvents.pauseBtnClicked(event.currentTarget)} />
 
     <!-- Forward 1 frame button -->
     <IconButton
       toolTipText="Forward 1 frame"
       btnColor="btn-neutral"
       svgIconPath="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z"
-      clickEvent={LeftControlPanelEvents.forwardOneFrameBtnClicked()} />
+      onClick={(event) => LeftControlPanelEvents.forwardOneFrameBtnClicked(event.currentTarget)} />
   </div>
 
   <!-- Simulation speed section -->
   <p class="text-xl font-semibold mt-10">Simulation Speed</p>
 
   <input
-    on:input={() => {
-      LeftControlPanelEvents.simulationSpeedChanged();
+    on:input={(event) => {
+      LeftControlPanelEvents.simulationSpeedChanged(event.currentTarget);
     }}
     id="simulationSpeedSlider"
     type="range"
@@ -65,28 +66,28 @@
     checkboxLabel="Show gravity force"
     checkboxSubtextStyle="text-4xl text-blue-500"
     checkboxSubtext="&#10230;"
-    clickEvent={LeftControlPanelEvents.showForceCheckboxCheckChanged()} />
+    onClick={(event) => LeftControlPanelEvents.showForceCheckboxCheckChanged(event.currentTarget)} />
 
   <!-- Show velocity vectors checkbox -->
   <VisibilityCheckbox
     checkboxLabel="Show velocity vectors"
     checkboxSubtextStyle="text-4xl text-yellow-500"
     checkboxSubtext="&#10230;"
-    clickEvent={LeftControlPanelEvents.showVelocityCheckboxCheckChanged()} />
+    onClick={(event) => LeftControlPanelEvents.showVelocityCheckboxCheckChanged(event.currentTarget)} />
 
   <!-- Show path checkbox -->
   <VisibilityCheckbox
     checkboxLabel="Show path"
     checkboxSubtextStyle="text-4xl text-green-500"
     checkboxSubtext="---------"
-    clickEvent={LeftControlPanelEvents.showPathCheckboxCheckChanged()} />
+    onClick={(event) => LeftControlPanelEvents.showPathCheckboxCheckChanged(event.currentTarget)} />
 
   <!-- Zoom slider to control how magnified the vectors are -->
   <div class="form-control mt-4 py-2 px-1 mb-4">
     <span class="text-lg">Vector zoom</span>
     <input
-      on:input={() => {
-        LeftControlPanelEvents.zoomChanged();
+      on:input={(event) => {
+        LeftControlPanelEvents.zoomChanged(event.currentTarget);
       }}
       id="zoomSlider"
       type="range"
