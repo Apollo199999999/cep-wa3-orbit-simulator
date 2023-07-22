@@ -1,7 +1,7 @@
 import type { Sketch } from "p5-svelte";
 import { SimulationVariables } from "./SimulationVariables";
 import { BgStar } from "./BgStar"
-import { Body } from "./Body.ts"
+import { Body } from "./Body"
 import { cloneDeep } from "lodash"
 
 //You might be wondering why I don't have to initialise the UI class to attach event handlers or something
