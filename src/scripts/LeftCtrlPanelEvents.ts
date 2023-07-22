@@ -1,9 +1,9 @@
-import { SimulationVariables } from "./simulation-variables";
+import { SimulationVariables } from "./SimulationVariables";
 import { cloneDeep } from "lodash"
 
 export class LeftControlPanelEvents {
     //Event handler for when the reset button is clicked
-    public static resetBtnClicked(element: any): void {
+    public static resetBtnClicked(element: any) {
         //Stop the simulation
         SimulationVariables.simulationRunning = false;
 
@@ -12,7 +12,7 @@ export class LeftControlPanelEvents {
     }
 
     //Event handler for when the play button is clicked
-    public static playBtnClicked(element: any): void {
+    public static playBtnClicked(element: any) {
         if (SimulationVariables.simulationRunning == false) {
             //Save the initial state of the simulation before running by deep cloning the SimulationVariables.bodies array
             SimulationVariables.savedBodies = cloneDeep(SimulationVariables.bodies);
@@ -23,7 +23,7 @@ export class LeftControlPanelEvents {
     }
 
     //Event handler for when the pause button is clicked
-    public static pauseBtnClicked(element: any): void {
+    public static pauseBtnClicked(element: any) {
         if (SimulationVariables.simulationRunning == true) {
             //Stop the simulation
             SimulationVariables.simulationRunning = false;
@@ -31,7 +31,7 @@ export class LeftControlPanelEvents {
     }
 
     //Event handler for when the skip one frame button is pressed
-    public static forwardOneFrameBtnClicked(element: any): void {
+    public static forwardOneFrameBtnClicked(element: any) {
         //Run the simulation for 1 frame only
         SimulationVariables.simulationRunning = true;
 
@@ -41,7 +41,7 @@ export class LeftControlPanelEvents {
     }
 
     //Event handler for when the simulation speed slider is dragged
-    public static simulationSpeedChanged(element: any): void {
+    public static simulationSpeedChanged(element: any) {
         //Cast the element as a HTMLInputElement
         let simulationSpeedSlider: HTMLInputElement = element as HTMLInputElement;
 
@@ -50,7 +50,7 @@ export class LeftControlPanelEvents {
     }
 
     //Event handlers for force, velocity, path checkboxes
-    public static showForceCheckboxCheckChanged(element: any): void {
+    public static showForceCheckboxCheckChanged(element: any) {
         //Get the child checkbox inside the element
         let showForceCheckbox: HTMLInputElement = (element as HTMLElement).querySelector("input") as HTMLInputElement;
 
@@ -58,7 +58,7 @@ export class LeftControlPanelEvents {
         SimulationVariables.showGravityForce = showForceCheckbox.checked;
     }
 
-    public static showVelocityCheckboxCheckChanged(element: any): void {
+    public static showVelocityCheckboxCheckChanged(element: any) {
         //Get the child checkbox inside the element
         let showVelocityCheckbox: HTMLInputElement = (element as HTMLElement).querySelector("input") as HTMLInputElement;
 
@@ -66,7 +66,7 @@ export class LeftControlPanelEvents {
         SimulationVariables.showVelocityVectors = showVelocityCheckbox.checked;
     }
 
-    public static showPathCheckboxCheckChanged(element: any): void {
+    public static showPathCheckboxCheckChanged(element: any) {
         //Update simulation variables depending on check state of checkbox
         //Get the child checkbox inside the element
         let showPathCheckbox: HTMLInputElement = (element as HTMLElement).querySelector("input") as HTMLInputElement;
@@ -76,7 +76,7 @@ export class LeftControlPanelEvents {
     }
 
     //Event handler for zoom slider which controls how magnified the vectors are
-    public static zoomChanged(element: any): void {
+    public static zoomChanged(element: any) {
         //Cast the element as a HTMLInputElement
         let zoomSlider: HTMLInputElement = element as HTMLInputElement;
 

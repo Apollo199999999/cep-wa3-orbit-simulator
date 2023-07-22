@@ -25,6 +25,7 @@
 	"type": "module",
 	"dependencies": {
 		"@types/lodash": "^4.14.195",
-		"lodash": "^4.17.21"
+		"lodash": "^4.17.21",
+		"p5-svelte": "^3.1.2"
 	}
 }

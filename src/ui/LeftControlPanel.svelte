@@ -1,7 +1,7 @@
 <script lang="ts">
   import { LeftControlPanelEvents } from "../scripts/LeftCtrlPanelEvents";
-  import IconButton from "./common/icon-button.svelte";
-  import VisibilityCheckbox from "./common/visibility-checkbox.svelte";
+  import IconButton from "./components/IconButton.svelte";
+  import VisibilityCheckbox from "./components/VisibilityCheckbox.svelte";
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
