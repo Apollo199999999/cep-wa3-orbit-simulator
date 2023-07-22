@@ -22,7 +22,7 @@ export const p5Sketch: Sketch = (p5) => {
         //Populate bgStars array
         for (let i = 0; i < 100; i++) {
             bgStars.push(
-                new BgStar(p5, p5.random(p5.width), p5.random(p5.height), p5.random(1, 5), p5.random(255))
+                new BgStar(p5.random(p5.width), p5.random(p5.height), p5.random(1, 5), p5.random(255))
             );
         }
 
@@ -59,7 +59,7 @@ export const p5Sketch: Sketch = (p5) => {
     //Function to draw stars in the background
     function drawBackgroundStars() {
         for (let i = 0; i < bgStars.length; i++) {
-            bgStars[i].display();
+            bgStars[i].display(p5);
         }
     }
 
@@ -80,10 +80,10 @@ export const p5Sketch: Sketch = (p5) => {
             for (let j = SimulationVariables.bodies.length - 1; j >= 0; j--) {
                 if (i !== j) {
                     let force = SimulationVariables.bodies[j].calculateAttraction(SimulationVariables.bodies[i]);
-                    SimulationVariables.bodies[i].applyForce(force);
+                    SimulationVariables.bodies[i].applyForce(p5, force);
 
                     //Check if the 2 bodies have collided
-                    SimulationVariables.bodies[i].checkCollision(SimulationVariables.bodies[j]);
+                    SimulationVariables.bodies[i].checkCollision(p5, SimulationVariables.bodies[j]);
                 }
             }
         }
@@ -95,10 +95,10 @@ export const p5Sketch: Sketch = (p5) => {
 
         for (let i = 0; i < SimulationVariables.bodies.length; i++) {
             //Update bodies with applied force
-            SimulationVariables.bodies[i].update(updatePosition);
+            SimulationVariables.bodies[i].update(p5, updatePosition);
 
             //Update the offscreen array with whether this body is off screen
-            bodiesOffScreen.push(SimulationVariables.bodies[i].checkOffScreen());
+            bodiesOffScreen.push(SimulationVariables.bodies[i].checkOffScreen(p5));
         }
 
         //Shift the position of all bodies if all bodies are off screen, to make them reenter from the opposite side of the screen
@@ -129,18 +129,18 @@ export const p5Sketch: Sketch = (p5) => {
     function displayBodies() {
         //Display the bodies
         for (let i = 0; i < SimulationVariables.bodies.length; i++) {
-            SimulationVariables.bodies[i].display();
+            SimulationVariables.bodies[i].display(p5);
         }
     }
 
     //Functions to control the dragging of bodies using the mouse
     p5.mouseDragged = () => {
         //To avoid dragging if mouse is over control panel, or if a dialog is currently open
-        if (p5.mouseX < p5.width &&p5. mouseY < p5.height && SimulationVariables.modalDialogOpen == false) {
+        if (p5.mouseX < p5.width && p5.mouseY < p5.height && SimulationVariables.modalDialogOpen == false) {
             for (let i = 0; i < SimulationVariables.bodies.length; i++) {
                 if (
-                    SimulationVariables.bodies[i].startDraggingVelocityVector() == true ||
-                    SimulationVariables.bodies[i].startDraggingBody() == true
+                    SimulationVariables.bodies[i].startDraggingVelocityVector(p5) == true ||
+                    SimulationVariables.bodies[i].startDraggingBody(p5) == true
                 ) {
                     //User is in the process of dragging a body/velocity vector, so there's no need to check the other bodies anymore.
                     break;

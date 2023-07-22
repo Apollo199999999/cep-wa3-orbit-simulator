@@ -14,8 +14,8 @@
     <link rel="prefetch" href="/explosion.gif" as="image" type="image/gif" />
     <link rel="preload" href="/explosion.gif" as="image" type="image/gif" />
 
-    <link rel="prefetch" href="/explosion.mp3" as="audio" type="audio/mp3" />
-    <link rel="preload" href="/explosion.mp3" as="image" type="audio/mp3" />
+    <link rel="prefetch" href="/explosion.mp3" as="audio" type="audio/mpeg" />
+    <link rel="preload" href="/explosion.mp3" as="audio" type="audio/mpeg" />
 </svelte:head>
 
 <div class="flex">
