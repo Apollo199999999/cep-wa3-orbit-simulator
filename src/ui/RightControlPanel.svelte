@@ -1,45 +1,37 @@
 <script>
   import { RightControlPanelEvents } from "../scripts/ui/RightCtrlPanelEvents";
+  import SimulationPresetDialog from "./components/SimulationPresetDialog.svelte";
+
+  //Dialog id to open/close simulation preset dialog
+  let simulationDialogId = "simulationPresetDialog";
 </script>
 
 <!-- Simulation presets dialog -->
-<input type="checkbox" id="simulationPresetDialog" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box">
-    <h1 class="font-bold text-lg">Load Simulation Preset</h1>
-    <p class="py-4">Select a preset:</p>
-    <select class="select select-primary w-full text-lg" id="presetSelector">
-      <option selected>Sun, Planet</option>
-      <option>Sun, Planet, Moon</option>
-      <option>Sun, Planet, Planet</option>
-      <option>Gravity Assist</option>
-      <option>Binary Star</option>
-    </select>
-    <div class="modal-action">
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-      <label
-        for="simulationPresetDialog"
-        on:click={(event) => {
-          RightControlPanelEvents.simulationPresetDialogClose(
-            event.currentTarget
-          );
-        }}
-        class="btn btn-primary">Apply</label>
-    </div>
-  </div>
-</div>
+<SimulationPresetDialog
+  dialogId={simulationDialogId}
+  onDialogClose={(event) => {
+    RightControlPanelEvents.simulationPresetDialogClose(event.currentTarget);
+  }} />
 
 <!-- Right control panel (previously "Data" tab) -->
 <div
-  id="dataPage"
+  id="rightControlPanel"
   class="bg-base-100 flex-1 p-4 pr-3 max-h-screen overflow-y-auto overflow-x-hidden">
+  <!-- Here's a hacky workaround, since we cant call "onload" for div elements, we add a hidden img element that calls onload instead -->
+  <img
+    src="/favicon.svg"
+    alt=""
+    class="hidden"
+    on:load={(event) => {
+      RightControlPanelEvents.rightControlPanelLoaded(event.currentTarget);
+    }} />
+
   <!-- Simulation preset options -->
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
   <label
     class="btn btn-primary w-full"
-    for="simulationPresetDialog"
+    for={simulationDialogId}
     on:click={(event) => {
       RightControlPanelEvents.simulationPresetDialogOpen(event.currentTarget);
     }}>Load Simulation Preset</label>

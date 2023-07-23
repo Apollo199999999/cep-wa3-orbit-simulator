@@ -19,6 +19,9 @@ export const p5Sketch: Sketch = (p5) => {
         //Manually control the frame rate of the draw function, so we don't use p5.js automatic loop
         p5.noLoop();
 
+        //Store the p5 instance in simulation variables
+        SimulationVariables.p5Instance = p5;
+        
         //Populate bgStars array
         for (let i = 0; i < 100; i++) {
             bgStars.push(
@@ -28,10 +31,10 @@ export const p5Sketch: Sketch = (p5) => {
 
         //Initialise 2 bodies at the start of the simulation
         //First body should be spawned at the center, with a yellow color
-        SimulationVariables.bodies.push(new Body(p5, 300, p5.width / 2, p5.height / 2, -0.5, 0, [255, 255, 52]));
+        SimulationVariables.bodies.push(new Body(300, p5.width / 2, p5.height / 2, -0.5, 0, [255, 255, 52]));
         //Second body is to be spawned in a stable orbit, with random color
         SimulationVariables.bodies.push(
-            new Body(p5, 50, p5.width / 2, p5.height / 2 - 150, 3.0, 0, [
+            new Body(50, p5.width / 2, p5.height / 2 - 150, 3.0, 0, [
                 p5.random(25, 255),
                 p5.random(25, 255),
                 p5.random(25, 255),
@@ -50,6 +53,9 @@ export const p5Sketch: Sketch = (p5) => {
         p5.background(20);
         drawBackgroundStars();
 
+        //Store the p5 instance in simulation variables
+        SimulationVariables.p5Instance = p5;
+
         //Always update the bodies, but the bodies should not apply forces if the simulation is paused
         updateBodies(SimulationVariables.simulationRunning);
 
@@ -59,7 +65,7 @@ export const p5Sketch: Sketch = (p5) => {
     //Function to draw stars in the background
     function drawBackgroundStars() {
         for (let i = 0; i < bgStars.length; i++) {
-            bgStars[i].display(p5);
+            bgStars[i].display();
         }
     }
 
@@ -80,10 +86,10 @@ export const p5Sketch: Sketch = (p5) => {
             for (let j = SimulationVariables.bodies.length - 1; j >= 0; j--) {
                 if (i !== j) {
                     let force = SimulationVariables.bodies[j].calculateAttraction(SimulationVariables.bodies[i]);
-                    SimulationVariables.bodies[i].applyForce(p5, force);
+                    SimulationVariables.bodies[i].applyForce(force);
 
                     //Check if the 2 bodies have collided
-                    SimulationVariables.bodies[i].checkCollision(p5, SimulationVariables.bodies[j]);
+                    SimulationVariables.bodies[i].checkCollision(SimulationVariables.bodies[j]);
                 }
             }
         }
@@ -95,10 +101,10 @@ export const p5Sketch: Sketch = (p5) => {
 
         for (let i = 0; i < SimulationVariables.bodies.length; i++) {
             //Update bodies with applied force
-            SimulationVariables.bodies[i].update(p5, updatePosition);
+            SimulationVariables.bodies[i].update(updatePosition);
 
             //Update the offscreen array with whether this body is off screen
-            bodiesOffScreen.push(SimulationVariables.bodies[i].checkOffScreen(p5));
+            bodiesOffScreen.push(SimulationVariables.bodies[i].checkOffScreen());
         }
 
         //Shift the position of all bodies if all bodies are off screen, to make them reenter from the opposite side of the screen
@@ -129,7 +135,7 @@ export const p5Sketch: Sketch = (p5) => {
     function displayBodies() {
         //Display the bodies
         for (let i = 0; i < SimulationVariables.bodies.length; i++) {
-            SimulationVariables.bodies[i].display(p5);
+            SimulationVariables.bodies[i].display();
         }
     }
 
@@ -139,8 +145,8 @@ export const p5Sketch: Sketch = (p5) => {
         if (p5.mouseX < p5.width && p5.mouseY < p5.height && SimulationVariables.modalDialogOpen == false) {
             for (let i = 0; i < SimulationVariables.bodies.length; i++) {
                 if (
-                    SimulationVariables.bodies[i].startDraggingVelocityVector(p5) == true ||
-                    SimulationVariables.bodies[i].startDraggingBody(p5) == true
+                    SimulationVariables.bodies[i].startDraggingVelocityVector() == true ||
+                    SimulationVariables.bodies[i].startDraggingBody() == true
                 ) {
                     //User is in the process of dragging a body/velocity vector, so there's no need to check the other bodies anymore.
                     break;

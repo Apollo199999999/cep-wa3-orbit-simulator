@@ -1,4 +1,5 @@
 import type { Body } from "./p5.js/Body";
+import type p5 from 'p5';
 
 export class SimulationVariables {
     //This file stores all simulation variables, such as whether the simulation is running, and other properties
@@ -10,6 +11,9 @@ export class SimulationVariables {
 
     //Control panel width
     public static readonly CONTROL_PANEL_WIDTH: number = 272;
+
+    //Variable to store the p5 Instance from the sketch
+    public static p5Instance: p5;
 
     //Array to store the bodies currently running in the simulation
     public static bodies: Array<Body> = [];

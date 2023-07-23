@@ -17,11 +17,11 @@ export class Body {
     public velocityVectorDraggableSize: number;
     public velocityVectorDragging: boolean;
 
-    constructor(p5Instance: p5, m: number, x: number, y: number, vx: number, vy: number, fillColor: Array<number>) {
+    constructor(m: number, x: number, y: number, vx: number, vy: number, fillColor: Array<number>) {
         this.mass = m;
-        this.position = p5Instance.createVector(x, y);
-        this.velocity = p5Instance.createVector(vx, vy);
-        this.acceleration = p5Instance.createVector(0, 0);
+        this.position = SimulationVariables.p5Instance.createVector(x, y);
+        this.velocity = SimulationVariables.p5Instance.createVector(vx, vy);
+        this.acceleration = SimulationVariables.p5Instance.createVector(0, 0);
 
         //Color attribute that stores rgb values in an array, to help the user distinguish between bodies
         this.fillColor = fillColor;
@@ -42,7 +42,7 @@ export class Body {
         this.bodyDragging = false;
 
         //Declare a vector to store the draggable area for the velocity vector
-        this.velocityVectorDraggablePos = p5Instance.createVector(0, 0);
+        this.velocityVectorDraggablePos = SimulationVariables.p5Instance.createVector(0, 0);
         //Size of draggable area for dragging the velocity vector
         this.velocityVectorDraggableSize = 50;
         //Variable to determine if velocity vector is being dragged
@@ -70,12 +70,12 @@ export class Body {
     }
 
     //Function that allows the user to drag the body using the mouse
-    startDraggingBody(p5Instance: p5) {
+    startDraggingBody() {
         //To check if body is being dragged, check if mouse is within the bounds of the body,
         //or if the body is currently being dragged by the mouse
         //DO NOT DRAG THE BODY IF THE VECTOR IS BEING DRAGGED
         if (this.velocityVectorDragging == false) {
-            let bodyDistance = p5Instance.dist(p5Instance.mouseX, p5Instance.mouseY, this.position.x, this.position.y);
+            let bodyDistance = SimulationVariables.p5Instance.dist(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY, this.position.x, this.position.y);
 
             if (bodyDistance < this.size / 2 || this.bodyDragging == true) {
                 //When the user clicks on the body for the first time and drags,
@@ -83,8 +83,8 @@ export class Body {
                 //we can set dragging to true, so the user can continue dragging the body without the mouse being within bounds of the size of the body,
                 //until the user releases his mouse (where "stopDragging()" is called)
                 this.bodyDragging = true;
-                this.position.x = p5Instance.mouseX;
-                this.position.y = p5Instance.mouseY;
+                this.position.x = SimulationVariables.p5Instance.mouseX;
+                this.position.y = SimulationVariables.p5Instance.mouseY;
 
                 return true;
             }
@@ -94,7 +94,7 @@ export class Body {
     }
 
     //Function that allows the user to drag the velocity vector using the mouse
-    startDraggingVelocityVector(p5Instance: p5) {
+    startDraggingVelocityVector() {
         //Since this function is called only when mouseDragged(), there is no need to check if mouse is pressed in this function.
         //To check if the velocity vector is being dragged,
         //Check if mouse is within bounds of draggable area, or if vector is currently being dragged
@@ -102,9 +102,9 @@ export class Body {
         //ALSO DO NOT DRAG THE VELOCITY VECTOR IF IT ISN'T BEING SHOWN
 
         if (this.bodyDragging == false && SimulationVariables.showVelocityVectors == true) {
-            let velocityVectorDistance = p5Instance.dist(
-                p5Instance.mouseX,
-                p5Instance.mouseY,
+            let velocityVectorDistance = SimulationVariables.p5Instance.dist(
+                SimulationVariables.p5Instance.mouseX,
+                SimulationVariables.p5Instance.mouseY,
                 this.velocityVectorDraggablePos.x,
                 this.velocityVectorDraggablePos.y
             );
@@ -120,12 +120,12 @@ export class Body {
 
                 //Magnitude of vector should be distance between mouse position and this.position, divided by how magnified the vectors are
                 this.velocity.setMag(
-                    p5Instance.dist(p5Instance.mouseX, p5Instance.mouseY, this.position.x, this.position.y) /
+                    SimulationVariables.p5Instance.dist(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY, this.position.x, this.position.y) /
                     SimulationVariables.vectorMagnification
                 );
 
                 //Find the angle of mouseX, mouseY relative to this.position
-                let mouseVector = p5Instance.createVector(p5Instance.mouseX, p5Instance.mouseY);
+                let mouseVector = SimulationVariables.p5Instance.createVector(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY);
                 let angleVector = mouseVector.sub(this.position);
                 this.velocity.setHeading(angleVector.heading());
 
@@ -143,15 +143,15 @@ export class Body {
         this.velocityVectorDragging = false;
     }
 
-    applyForce(p5Instance: p5, force: p5.Vector) {
+    applyForce(force: p5.Vector) {
         let f = p5.Vector.div(force, this.mass);
         this.acceleration.add(f);
 
         //Save the applied force to array so it can be drawn in display()
-        this.appliedForces.push(p5Instance.createVector(force.x, force.y));
+        this.appliedForces.push(SimulationVariables.p5Instance.createVector(force.x, force.y));
     }
 
-    update(p5Instance: p5, updatePosition: boolean) {
+    update(updatePosition: boolean) {
         //Make sure to update this.size, in case our mass has changed
         this.size = 10 + this.mass * 0.25;
 
@@ -169,7 +169,7 @@ export class Body {
         //This will cause the ENITRE this.prevPos array to only contain the current position of the body, so you can't draw trails.
         //So instead, we create an enitely new vector and push it to the prevPos array, so it will not change when this body's position changes.
         //This took me way too long to figure out
-        this.prevPos.push(p5Instance.createVector(this.position.x, this.position.y));
+        this.prevPos.push(SimulationVariables.p5Instance.createVector(this.position.x, this.position.y));
 
         //Limit the size of the prevPos array to prevent the sketch from becoming too laggy
         if (this.prevPos.length > 120) {
@@ -181,19 +181,19 @@ export class Body {
     }
 
     //Function to check if the body is offscreen
-    checkOffScreen(p5Instance: p5) {
+    checkOffScreen() {
         return (
             this.position.x < 0 ||
-            this.position.x > p5Instance.width ||
+            this.position.x > SimulationVariables.p5Instance.width ||
             this.position.y < 0 ||
-            this.position.y > p5Instance.height
+            this.position.y > SimulationVariables.p5Instance.height
         );
     }
 
     //Function to determine if this body has collided with another body
-    checkCollision(p5Instance: p5, body: Body) {
+    checkCollision(body: Body) {
         //Get the distance between the 2 bodies
-        let distance = p5Instance.dist(
+        let distance = SimulationVariables.p5Instance.dist(
             this.position.x,
             this.position.y,
             body.position.x,
@@ -239,7 +239,7 @@ export class Body {
 
             let gifWidth = 80;
             let gifHeight = 80;
-            let explosionGif = p5Instance.createImg("/explosion.gif", "alt: explosion image");
+            let explosionGif = SimulationVariables.p5Instance.createImg("/explosion.gif", "alt: explosion image");
 
             explosionGif.size(gifWidth, gifHeight);
             explosionGif.addClass("select-none");
@@ -256,47 +256,47 @@ export class Body {
             }, 200);
         }
     }
-    display(p5Instance: p5) {
+    display() {
         //Draw the body as circle
-        p5Instance.noStroke();
+        SimulationVariables.p5Instance.noStroke();
 
         //Change the fill color, depending on if the mouse is hovering over this body
         //(gives user some indication that this body is draggable)
         //However, do not change the fill color if a dialog is open
-        let distance = p5Instance.dist(p5Instance.mouseX, p5Instance.mouseY, this.position.x, this.position.y);
+        let distance = SimulationVariables.p5Instance.dist(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY, this.position.x, this.position.y);
         if (distance < this.size / 2 && SimulationVariables.modalDialogOpen == false) {
             //Mouse is hovering over body, fill a darker shade
-            p5Instance.fill(
-                p5Instance.color(
+            SimulationVariables.p5Instance.fill(
+                SimulationVariables.p5Instance.color(
                     this.fillColor[0] - 50,
                     this.fillColor[1] - 50,
                     this.fillColor[2] - 50
                 )
             );
         } else {
-            p5Instance.fill(p5Instance.color(this.fillColor[0], this.fillColor[1], this.fillColor[2]));
+            SimulationVariables.p5Instance.fill(SimulationVariables.p5Instance.color(this.fillColor[0], this.fillColor[1], this.fillColor[2]));
         }
 
-        p5Instance.circle(this.position.x, this.position.y, this.size);
+        SimulationVariables.p5Instance.circle(this.position.x, this.position.y, this.size);
 
         //Draw the applied force if applicable
         if (SimulationVariables.showGravityForce == true && this.appliedForces.length != 0) {
             for (let i = 0; i < this.appliedForces.length; i++) {
-                this.drawVector(p5Instance, this.appliedForces[i], "force", SimulationVariables.vectorMagnification);
+                this.drawVector(this.appliedForces[i], "force", SimulationVariables.vectorMagnification);
             }
         }
 
         //Draw velocity vector if applicable
         if (SimulationVariables.showVelocityVectors == true) {
-            this.drawVector(p5Instance, this.velocity, "velocity", SimulationVariables.vectorMagnification);
+            this.drawVector(this.velocity, "velocity", SimulationVariables.vectorMagnification);
         }
 
         //Draw body path if applicable
         if (SimulationVariables.showPath == true) {
             for (let i = 1; i < this.prevPos.length; i++) {
-                p5Instance.stroke(16, 185, 129);
-                p5Instance.strokeWeight(Math.min(i / 20, 3));
-                p5Instance.line(
+                SimulationVariables.p5Instance.stroke(16, 185, 129);
+                SimulationVariables.p5Instance.strokeWeight(Math.min(i / 20, 3));
+                SimulationVariables.p5Instance.line(
                     this.prevPos[i - 1].x,
                     this.prevPos[i - 1].y,
                     this.prevPos[i].x,
@@ -307,36 +307,36 @@ export class Body {
     }
 
     //Function to draw force/velocity vectors
-    drawVector(p5Instance: p5, vector, type, multiplier) {
-        p5Instance.push();
+    drawVector(vector: p5.Vector, type: string, multiplier: number) {
+        SimulationVariables.p5Instance.push();
 
         //Draw the vector at the center of the body
-        p5Instance.translate(this.position.x, this.position.y);
-        p5Instance.rotate(vector.heading());
+        SimulationVariables.p5Instance.translate(this.position.x, this.position.y);
+        SimulationVariables.p5Instance.rotate(vector.heading());
 
         //Stroke and fill color depending on vector type
         if (type == "force") {
-            p5Instance.fill(59, 130, 246);
-            p5Instance.stroke(59, 130, 246);
+            SimulationVariables.p5Instance.fill(59, 130, 246);
+            SimulationVariables.p5Instance.stroke(59, 130, 246);
         } else if (type == "velocity") {
-            p5Instance.fill(245, 158, 11);
-            p5Instance.stroke(245, 158, 11);
+            SimulationVariables.p5Instance.fill(245, 158, 11);
+            SimulationVariables.p5Instance.stroke(245, 158, 11);
         }
-        p5Instance.strokeWeight(2);
+        SimulationVariables.p5Instance.strokeWeight(2);
 
         //Draw arrow line
-        p5Instance.line(0, 0, vector.mag() * multiplier, 0);
+        SimulationVariables.p5Instance.line(0, 0, vector.mag() * multiplier, 0);
 
         //Draw arrow head
-        p5Instance.translate(vector.mag() * multiplier, 0);
-        p5Instance.triangle(0, 0, -6, -3, -6, 3);
+        SimulationVariables.p5Instance.translate(vector.mag() * multiplier, 0);
+        SimulationVariables.p5Instance.triangle(0, 0, -6, -3, -6, 3);
 
         //If the vector type is velocity, draw a little dotted circle around the arrow head to indicate that it's draggable
         if (type == "velocity") {
-            p5Instance.noFill();
-            p5Instance.drawingContext.setLineDash([5, 5]);
-            p5Instance.stroke("gray");
-            p5Instance.circle(0, 0, this.velocityVectorDraggableSize);
+            SimulationVariables.p5Instance.noFill();
+            SimulationVariables.p5Instance.drawingContext.setLineDash([5, 5]);
+            SimulationVariables.p5Instance.stroke("gray");
+            SimulationVariables.p5Instance.circle(0, 0, this.velocityVectorDraggableSize);
 
             //Store the center of the draggable area in the velocityVectorDraggable variable,
             //with reference to the origin at the top left corner
@@ -346,6 +346,6 @@ export class Body {
                 this.position.y + vector.y * multiplier;
         }
 
-        p5Instance.pop();
+        SimulationVariables.p5Instance.pop();
     }
 }
