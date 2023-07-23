@@ -1,4 +1,4 @@
-import type { Body } from "./Body";
+import type { Body } from "./p5.js/Body";
 
 export class SimulationVariables {
     //This file stores all simulation variables, such as whether the simulation is running, and other properties

@@ -1,5 +1,5 @@
 import type { Sketch } from "p5-svelte";
-import { SimulationVariables } from "./SimulationVariables";
+import { SimulationVariables } from "../SimulationVariables";
 import { BgStar } from "./BgStar"
 import { Body } from "./Body"
 import { cloneDeep } from "lodash"

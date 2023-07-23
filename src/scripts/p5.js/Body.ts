@@ -1,6 +1,6 @@
 //Import p5 classes
 import p5 from 'p5';
-import { SimulationVariables } from './SimulationVariables';
+import { SimulationVariables } from '../SimulationVariables';
 
 export class Body {
     //Declare global variables
