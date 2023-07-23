@@ -1,4 +1,4 @@
-import { SimulationVariables } from "./SimulationVariables";
+import { SimulationVariables } from "../SimulationVariables";
 import { cloneDeep } from "lodash"
 
 export class LeftControlPanelEvents {

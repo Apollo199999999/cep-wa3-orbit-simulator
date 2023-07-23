@@ -1,4 +1,4 @@
-import { SimulationVariables } from "./SimulationVariables";
+import { SimulationVariables } from "../SimulationVariables";
 
 export class RightControlPanelEvents {
     //Event handler to open dialog to load new preset

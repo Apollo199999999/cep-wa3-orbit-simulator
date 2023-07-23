@@ -1,5 +1,5 @@
 <script>
-  import { RightControlPanelEvents } from "../scripts/RightCtrlPanelEvents";
+  import { RightControlPanelEvents } from "../scripts/ui/RightCtrlPanelEvents";
 </script>
 
 <!-- Simulation presets dialog -->

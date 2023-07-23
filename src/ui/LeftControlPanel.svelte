@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { LeftControlPanelEvents } from "../scripts/LeftCtrlPanelEvents";
+  import { LeftControlPanelEvents } from "../scripts/ui/LeftCtrlPanelEvents";
   import IconButton from "./components/IconButton.svelte";
   import VisibilityCheckbox from "./components/VisibilityCheckbox.svelte";
 </script>

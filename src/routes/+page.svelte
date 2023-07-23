@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import "../app.css";
   import LeftControlPanel from "../ui/LeftControlPanel.svelte";
-  import { p5Sketch } from "../scripts/p5Sketch";
+  import { p5Sketch } from "../scripts/p5.js/p5Sketch";
   import P5 from "p5-svelte";
   import HelpButton from "../ui/components/HelpButton.svelte";
   import RightControlPanel from "../ui/RightControlPanel.svelte";
