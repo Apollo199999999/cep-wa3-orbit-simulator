@@ -76,7 +76,7 @@ export class Body {
         //DO NOT DRAG THE BODY IF THE VECTOR IS BEING DRAGGED
         if (this.velocityVectorDragging == false) {
             let bodyDistance = p5Instance.dist(p5Instance.mouseX, p5Instance.mouseY, this.position.x, this.position.y);
-            console.log(p5Instance);
+
             if (bodyDistance < this.size / 2 || this.bodyDragging == true) {
                 //When the user clicks on the body for the first time and drags,
                 //once we have confirmed that the user is currently dragging the body as the mouse is within bounds of the size of the body,
