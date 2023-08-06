@@ -1,6 +1,14 @@
 <script lang="ts">
   export let dialogId: string = "";
   export let onDialogClose: any;
+
+  //select element binded from html
+  let presetSelector: HTMLSelectElement;
+
+  //Function to get the selected preset
+  export function getSelectedPreset() {
+    return presetSelector.options[presetSelector.selectedIndex].text;
+  }
 </script>
 
 <!-- Simulation presets dialog -->
@@ -9,7 +17,9 @@
   <div class="modal-box">
     <h1 class="font-bold text-lg">Load Simulation Preset</h1>
     <p class="py-4">Select a preset:</p>
-    <select class="select select-primary w-full text-lg" id="presetSelector">
+    <select
+      class="select select-primary w-full text-lg"
+      bind:this={presetSelector}>
       <option selected>Sun, Planet</option>
       <option>Sun, Planet, Moon</option>
       <option>Sun, Planet, Planet</option>
@@ -19,10 +29,8 @@
     <div class="modal-action">
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-      <label
-        for={dialogId}
-        on:click={onDialogClose}
-        class="btn btn-primary">Apply</label>
+      <label for={dialogId} on:click={onDialogClose} class="btn btn-primary"
+        >Apply</label>
     </div>
   </div>
 </div>

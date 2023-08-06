@@ -4,19 +4,17 @@ import { Body } from "../p5.js/Body";
 import { SimulationVariables } from "../SimulationVariables";
 
 export class RightControlPanelEvents {
-    //Variable to store the div for the right control panel
+    //Variable to store the div for the right control panel, binded from the svelte file
     public static rightControlPanelDiv: HTMLDivElement;
 
-    //Variable to store the input box for inputting the number of bodies
+    //Variable to store the input box for inputting the number of bodies, binded from the svelte file
     public static bodiesNumberInput: HTMLInputElement;
+
+    //Variable to store the simulation preset dialog, binded from the svelte file
+    public static simulationPresetDialog: SimulationPresetDialog;
 
     //Event handler after the right control panel loads
     public static rightControlPanelLoaded(element: any) {
-        //Do not use the "element" argument, as it points to the hidden img element that triggers this event
-        //Assign necessary elements
-        this.rightControlPanelDiv = document.getElementById("rightControlPanel") as HTMLDivElement;
-        this.bodiesNumberInput = this.rightControlPanelDiv.querySelector("#bodiesNumberInput") as HTMLInputElement;
-
         //Start updating the right control panel with the body data
         this.updateRightCtrlPanel();
     }
@@ -30,8 +28,7 @@ export class RightControlPanelEvents {
     //Event handler after dialog closed
     public static simulationPresetDialogClose(element: any) {
         //Get the selected item in the select element
-        let select: HTMLSelectElement = document.getElementById("presetSelector") as HTMLSelectElement;
-        let chosenPreset = select.options[select.selectedIndex].text;
+        let chosenPreset: string = this.simulationPresetDialog.getSelectedPreset();
 
         //Pause the simulation
         SimulationVariables.simulationRunning = false;
