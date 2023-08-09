@@ -1,5 +1,5 @@
 //Import p5 classes
-import p5 from 'p5';
+import type p5 from 'p5';
 import { SimulationVariables } from '../SimulationVariables';
 
 export class Body {
@@ -7,7 +7,6 @@ export class Body {
     public mass: number;
     public position: p5.Vector;
     public velocity: p5.Vector;
-    public acceleration: p5.Vector;
     public fillColor: Array<number>;
     public size: number;
     public appliedForces: Array<p5.Vector>;
@@ -17,11 +16,14 @@ export class Body {
     public velocityVectorDraggableSize: number;
     public velocityVectorDragging: boolean;
 
+    //Variables to store rk4 computed values
+    public rk4Velocity: p5.Vector = SimulationVariables.p5Instance.createVector(0, 0);
+    public rk4Position: p5.Vector = SimulationVariables.p5Instance.createVector(0, 0);
+
     constructor(m: number, x: number, y: number, vx: number, vy: number, fillColor: Array<number>) {
         this.mass = m;
         this.position = SimulationVariables.p5Instance.createVector(x, y);
         this.velocity = SimulationVariables.p5Instance.createVector(vx, vy);
-        this.acceleration = SimulationVariables.p5Instance.createVector(0, 0);
 
         //Color attribute that stores rgb values in an array, to help the user distinguish between bodies
         this.fillColor = fillColor;
@@ -49,25 +51,6 @@ export class Body {
         this.velocityVectorDragging = false;
     }
 
-    calculateAttraction(body: Body) {
-        // Calculate direction of force
-        let force = p5.Vector.sub(this.position, body.position);
-        
-        // Distance between objects
-        let distance = force.mag();
-
-        // Normalize vector
-        force.normalize();
-        // Calculate gravitional force magnitude
-        let strength =
-            (SimulationVariables.GRAVITATIONAL_CONSTANT * this.mass * body.mass) /
-            (distance * distance);
-
-        // Get force vector --> magnitude * direction
-        force.mult(strength);
-
-        return force;
-    }
 
     //Function that allows the user to drag the body using the mouse
     startDraggingBody() {
@@ -143,13 +126,6 @@ export class Body {
         this.velocityVectorDragging = false;
     }
 
-    applyForce(force: p5.Vector) {
-        let f = p5.Vector.div(force, this.mass);
-        this.acceleration.add(f);
-
-        //Save the applied force to array so it can be drawn in display()
-        this.appliedForces.push(SimulationVariables.p5Instance.createVector(force.x, force.y));
-    }
 
     update(updatePosition: boolean) {
         //Make sure to update this.size, in case our mass has changed
@@ -158,8 +134,22 @@ export class Body {
         //Since this function might also be used to update the body when the user is dragging it with the mouse,
         //we might not actually want to update velocity/position
         if (updatePosition == true) {
-            this.velocity.add(this.acceleration);
-            this.position.add(this.velocity);
+            //If both rk4Velocity and rk4Position have a non-zero magnitude, it indicates that the body is experiencing attraction by another body.
+            //If so, we update both velocity and position using rk4.
+            if (this.rk4Position.mag() > 0 && this.rk4Velocity.mag() > 0) {
+                this.velocity.add(this.rk4Velocity);
+                this.position.add(this.rk4Position);
+
+                //Remember to clear rk4Velocity and rk4Position after
+                this.rk4Velocity = SimulationVariables.p5Instance.createVector(0, 0);
+                this.rk4Position = SimulationVariables.p5Instance.createVector(0, 0);
+            }
+            else {
+                //If rk4Velocity and rk4Position are both 0, then it means it hasnt been updated since it was last cleared, 
+                //i.e., this body is the only body left in the simulation.
+                //If that is the case, velocity is constant, and it is safe to just add it to position.
+                this.position.add(this.velocity);
+            }
         }
 
         //Push our current position into the prevPos array
@@ -175,9 +165,6 @@ export class Body {
         if (this.prevPos.length > 120) {
             this.prevPos.shift();
         }
-
-        // Now we make sure to clear acceleration each time
-        this.acceleration.mult(0);
     }
 
     //Function to check if the body is offscreen
@@ -285,6 +272,9 @@ export class Body {
                 this.drawVector(this.appliedForces[i], "force", SimulationVariables.vectorMagnification);
             }
         }
+
+        //Clear appliedForces array
+        this.appliedForces = [];
 
         //Draw velocity vector if applicable
         if (SimulationVariables.showVelocityVectors == true) {

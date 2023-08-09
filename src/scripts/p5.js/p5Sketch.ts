@@ -3,6 +3,7 @@ import { SimulationVariables } from "../SimulationVariables";
 import { BgStar } from "./BgStar"
 import { Body } from "./Body"
 import { cloneDeep } from "lodash"
+import { RK4Utils } from "./RK4Utils";
 
 //You might be wondering why I don't have to initialise the UI class to attach event handlers or something
 //Well, all the methods for the event handlers are static, so they can be referenced from HTML easily!
@@ -21,7 +22,7 @@ export const p5Sketch: Sketch = (p5) => {
 
         //Store the p5 instance in simulation variables
         SimulationVariables.p5Instance = p5;
-        
+
         //Populate bgStars array
         for (let i = 0; i < 100; i++) {
             bgStars.push(
@@ -79,14 +80,11 @@ export const p5Sketch: Sketch = (p5) => {
         //Calculate force between each body and apply the force
         //Iterate backwards, since there is a possibility that we are removing bodies
         for (let i = SimulationVariables.bodies.length - 1; i >= 0; i--) {
-            //Clear the applied force array of before applying new forces
-            //Also clear the forces in case there is only one object left after a collision
-            SimulationVariables.bodies[i].appliedForces = [];
-
             for (let j = SimulationVariables.bodies.length - 1; j >= 0; j--) {
                 if (i !== j) {
-                    let force = SimulationVariables.bodies[j].calculateAttraction(SimulationVariables.bodies[i]);
-                    SimulationVariables.bodies[i].applyForce(force);
+                    //Calculate and apply gravitational force between the 2 bodies using RK4
+                    let rk4: RK4Utils = new RK4Utils(SimulationVariables.bodies[i], SimulationVariables.bodies[j]);
+                    rk4.RK4UpdateBodyAfterForce();
 
                     //Check if the 2 bodies have collided
                     SimulationVariables.bodies[i].checkCollision(SimulationVariables.bodies[j]);
