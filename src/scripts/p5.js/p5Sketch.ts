@@ -32,10 +32,10 @@ export const p5Sketch: Sketch = (p5) => {
 
         //Initialise 2 bodies at the start of the simulation
         //First body should be spawned at the center, with a yellow color
-        SimulationVariables.bodies.push(new Body(300, p5.width / 2, p5.height / 2, -0.5, 0, [255, 255, 52]));
+        SimulationVariables.bodies.push(new Body(300, p5.width / 2, p5.height / 2, -0.46, 0, [255, 255, 52]));
         //Second body is to be spawned in a stable orbit, with random color
         SimulationVariables.bodies.push(
-            new Body(50, p5.width / 2, p5.height / 2 - 150, 3.0, 0, [
+            new Body(50, p5.width / 2, p5.height / 2 - 200, 2.7, 0, [
                 p5.random(25, 255),
                 p5.random(25, 255),
                 p5.random(25, 255),
@@ -77,20 +77,30 @@ export const p5Sketch: Sketch = (p5) => {
         //2nd for loop => update the position and velocity of the bodies (if applicable), and check if bodies are offscreen
         //3rd for loop => shift the position of the bodies all of them are offscreen
 
-        //Calculate force between each body and apply the force
-        //Iterate backwards, since there is a possibility that we are removing bodies
-        for (let i = SimulationVariables.bodies.length - 1; i >= 0; i--) {
-            for (let j = SimulationVariables.bodies.length - 1; j >= 0; j--) {
-                if (i !== j) {
-                    //Calculate and apply gravitational force between the 2 bodies using RK4
-                    let rk4: RK4Utils = new RK4Utils(SimulationVariables.bodies[i], SimulationVariables.bodies[j]);
-                    rk4.RK4UpdateBodyAfterForce();
+        //If there's only 1 body left, there's no point trying to compute forces. Simply update the body.
+        if (SimulationVariables.bodies.length == 1) {
+            SimulationVariables.bodies[0].update(updatePosition);
+        }
+        else {
+            //Calculate force between each body and apply the force
+            //Iterate backwards, since there is a possibility that we are removing bodies
+            for (let i = SimulationVariables.bodies.length - 1; i >= 0; i--) {
+                for (let j = SimulationVariables.bodies.length - 1; j >= 0; j--) {
+                    if (i !== j) {
+                        //Calculate and apply gravitational force between the 2 bodies using RK4
+                        let rk4: RK4Utils = new RK4Utils(SimulationVariables.bodies[i], SimulationVariables.bodies[j]);
+                        rk4.RK4UpdateBodyAfterForce();
 
-                    //Check if the 2 bodies have collided
-                    SimulationVariables.bodies[i].checkCollision(SimulationVariables.bodies[j]);
+                        //Update body with applied force
+                        SimulationVariables.bodies[j].update(updatePosition);
+
+                        //Check if the 2 bodies have collided
+                        SimulationVariables.bodies[i].checkCollision(SimulationVariables.bodies[j]);
+                    }
                 }
             }
         }
+
 
         //Update the bodies
         //Create an arrays to store if a body is off screen
@@ -98,9 +108,6 @@ export const p5Sketch: Sketch = (p5) => {
         let bodiesOffScreen: Array<boolean> = [];
 
         for (let i = 0; i < SimulationVariables.bodies.length; i++) {
-            //Update bodies with applied force
-            SimulationVariables.bodies[i].update(updatePosition);
-
             //Update the offscreen array with whether this body is off screen
             bodiesOffScreen.push(SimulationVariables.bodies[i].checkOffScreen());
         }

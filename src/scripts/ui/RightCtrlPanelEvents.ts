@@ -38,75 +38,97 @@ export class RightControlPanelEvents {
 
         //Depending on the selected preset, reinitialise the SimulationVariables.bodies array
         if (chosenPreset === "Sun, Planet") {
+            //Sun
             SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.5, 0, [255, 255, 52])
+                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.46, 0, [255, 255, 52])
             );
+
+            //Planet
             SimulationVariables.bodies.push(
-                new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 150, 3.0, 0, [
+                new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 200, 2.7, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                 ])
             );
         } else if (chosenPreset === "Sun, Planet, Moon") {
+            //Sun
             SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.47, 0, [255, 255, 52])
+                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.35, 0, [255, 255, 52])
             );
+
+            //Planet
             SimulationVariables.bodies.push(
-                new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 200, 2.8, 0, [
+                new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 200, 2.0, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                 ])
             );
+
+            //Moon
             SimulationVariables.bodies.push(
-                new Body(5, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 160, 0.5, 0, [
+                new Body(5, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 170, 0.11, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                 ])
             );
         } else if (chosenPreset === "Sun, Planet, Planet") {
+            //Sun
             SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.7, 0, [255, 255, 52])
+                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.37, 0, [255, 255, 52])
             );
+
+            //Planet
             SimulationVariables.bodies.push(
-                new Body(30, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 120, 2.8, 0, [
+                new Body(10, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 100, 2.5, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255), SimulationVariables.p5Instance.random(25, 255),
+                    SimulationVariables.p5Instance.random(25, 255),
+                    SimulationVariables.p5Instance.random(25, 255),
                 ])
             );
+
+            //Planet
             SimulationVariables.bodies.push(
-                new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 280, 2.5, 0, [
+                new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 280, 1.7, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                 ])
             );
         } else if (chosenPreset === "Gravity Assist") {
+            //Sun
             SimulationVariables.bodies.push(
                 new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, 0, 0, [255, 255, 52])
             );
+
+            //Assisted Body
             SimulationVariables.bodies.push(
-                new Body(50, 50, SimulationVariables.p5Instance.height - 180, 1.5, 0, [
+                new Body(50, 50, SimulationVariables.p5Instance.height / 2 + 130, 1.5, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                 ])
             );
+
+            //Assisted Body
             SimulationVariables.bodies.push(
-                new Body(50, 50, SimulationVariables.p5Instance.height - 70, 4.0, 0, [
+                new Body(50, 70, SimulationVariables.p5Instance.height / 2 + 200, 4.0, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                 ])
             );
         } else if (chosenPreset === "Binary Star") {
+            //Star
             SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 75, 2.2, 0, [255, 255, 52])
+                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 100, 2.0, 0, [255, 255, 52])
             );
+
+            //Star
             SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 + 75, -2.2, 0, [
+                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 + 100, -2.0, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),

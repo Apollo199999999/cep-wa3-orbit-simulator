@@ -162,7 +162,7 @@ export class Body {
         this.prevPos.push(SimulationVariables.p5Instance.createVector(this.position.x, this.position.y));
 
         //Limit the size of the prevPos array to prevent the sketch from becoming too laggy
-        if (this.prevPos.length > 120) {
+        if (this.prevPos.length > 200) {
             this.prevPos.shift();
         }
     }
