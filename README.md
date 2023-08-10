@@ -4,4 +4,4 @@
 
 Created for a school project.
 
-Documentation/Portfolio link: https://www.notion.so/matthiaswang/CEP-WA3-Orbit-Simulator-Portfolio-8c97f163c6104dd5821dd76d57a3eb98?pvs=4
+Documentation/Portfolio link: https://matthiaswang.notion.site/CEP-WA3-Orbit-Simulator-Portfolio-8c97f163c6104dd5821dd76d57a3eb98
