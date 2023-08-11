@@ -40,7 +40,7 @@ export class RightControlPanelEvents {
         if (chosenPreset === "Sun, Planet") {
             //Sun
             SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.46, 0, [255, 255, 52])
+                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.45, 0, [255, 255, 52])
             );
 
             //Planet

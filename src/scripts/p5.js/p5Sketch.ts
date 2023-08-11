@@ -32,7 +32,7 @@ export const p5Sketch: Sketch = (p5) => {
 
         //Initialise 2 bodies at the start of the simulation
         //First body should be spawned at the center, with a yellow color
-        SimulationVariables.bodies.push(new Body(300, p5.width / 2, p5.height / 2, -0.46, 0, [255, 255, 52]));
+        SimulationVariables.bodies.push(new Body(300, p5.width / 2, p5.height / 2, -0.45, 0, [255, 255, 52]));
         //Second body is to be spawned in a stable orbit, with random color
         SimulationVariables.bodies.push(
             new Body(50, p5.width / 2, p5.height / 2 - 200, 2.7, 0, [

@@ -108,8 +108,8 @@ export class Body {
                 );
 
                 //Find the angle of mouseX, mouseY relative to this.position
-                let mouseVector = SimulationVariables.p5Instance.createVector(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY);
-                let angleVector = mouseVector.sub(this.position);
+                let mouseVector: p5.Vector = SimulationVariables.p5Instance.createVector(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY);
+                let angleVector: p5.Vector = mouseVector.sub(this.position);
                 this.velocity.setHeading(angleVector.heading());
 
                 return true;
@@ -180,7 +180,7 @@ export class Body {
     //Function to determine if this body has collided with another body
     checkCollision(body: Body) {
         //Get the distance between the 2 bodies
-        let distance = SimulationVariables.p5Instance.dist(
+        let distance: number = SimulationVariables.p5Instance.dist(
             this.position.x,
             this.position.y,
             body.position.x,
@@ -188,7 +188,7 @@ export class Body {
         );
 
         //If the dist between the 2 bodies is lesser or equal to the combined radii of the 2 bodies, collision has happened
-        let combinedRadii = this.size / 2 + body.size / 2;
+        let combinedRadii: number = this.size / 2 + body.size / 2;
 
         if (distance <= combinedRadii) {
             //Bodies have collided
@@ -208,10 +208,10 @@ export class Body {
             //From there, you can find the coordinates of the point of collision
             //For more information: https://en.wikipedia.org/wiki/Section_formula
 
-            let m = body.size / 2;
-            let n = this.size / 2;
-            let collisionX = (m * this.position.x + n * body.position.x) / (m + n);
-            let collisionY = (m * this.position.y + n * body.position.y) / (m + n);
+            let m: number = body.size / 2;
+            let n: number = this.size / 2;
+            let collisionX: number = (m * this.position.x + n * body.position.x) / (m + n);
+            let collisionY: number = (m * this.position.y + n * body.position.y) / (m + n);
 
             //Draw the exploding image at the collision point
             //Why do we use createImg to create a HTML img element instead of using p5.Image?
@@ -221,12 +221,12 @@ export class Body {
             //Gif source: https://pixabay.com/gifs/fire-explosion-cartoon-sparkle-fx-5518/
 
             //Play the explosion sound (source: https://www.freesoundeffects.com/free-sounds/explosion-10070/ -- explosion 5)
-            var audio = new Audio("/explosion.mp3");
+            var audio: HTMLAudioElement = new Audio("/explosion.mp3");
             audio.play();
 
-            let gifWidth = 80;
-            let gifHeight = 80;
-            let explosionGif = SimulationVariables.p5Instance.createImg("/explosion.gif", "alt: explosion image");
+            let gifWidth: number = 80;
+            let gifHeight: number = 80;
+            let explosionGif: p5.Element = SimulationVariables.p5Instance.createImg("/explosion.gif", "alt: explosion image");
 
             explosionGif.size(gifWidth, gifHeight);
             explosionGif.addClass("select-none");
@@ -250,7 +250,7 @@ export class Body {
         //Change the fill color, depending on if the mouse is hovering over this body
         //(gives user some indication that this body is draggable)
         //However, do not change the fill color if a dialog is open
-        let distance = SimulationVariables.p5Instance.dist(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY, this.position.x, this.position.y);
+        let distance: number = SimulationVariables.p5Instance.dist(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY, this.position.x, this.position.y);
         if (distance < this.size / 2 && SimulationVariables.modalDialogOpen == false) {
             //Mouse is hovering over body, fill a darker shade
             SimulationVariables.p5Instance.fill(
