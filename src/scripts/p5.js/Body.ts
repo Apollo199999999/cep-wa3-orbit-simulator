@@ -284,7 +284,7 @@ export class Body {
         //Draw body path if applicable
         if (SimulationVariables.showPath == true) {
             for (let i = 1; i < this.prevPos.length; i++) {
-                SimulationVariables.p5Instance.stroke(16, 185, 129);
+                SimulationVariables.p5Instance.stroke(74, 222, 128);
                 SimulationVariables.p5Instance.strokeWeight(Math.min(i / 20, 3));
                 SimulationVariables.p5Instance.line(
                     this.prevPos[i - 1].x,
@@ -309,8 +309,8 @@ export class Body {
             SimulationVariables.p5Instance.fill(59, 130, 246);
             SimulationVariables.p5Instance.stroke(59, 130, 246);
         } else if (type == "velocity") {
-            SimulationVariables.p5Instance.fill(245, 158, 11);
-            SimulationVariables.p5Instance.stroke(245, 158, 11);
+            SimulationVariables.p5Instance.fill(234, 179, 8);
+            SimulationVariables.p5Instance.stroke(234, 179, 8);
         }
         SimulationVariables.p5Instance.strokeWeight(2);
 

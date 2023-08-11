@@ -45,6 +45,7 @@ export const p5Sketch: Sketch = (p5) => {
 
         //Save the SimulationVariables.bodies array, in case of reset
         SimulationVariables.savedBodies = cloneDeep(SimulationVariables.bodies);
+
     };
     p5.draw = () => {
         //Controls how often draw is called, to determine how fast the simulation runs
@@ -54,6 +55,8 @@ export const p5Sketch: Sketch = (p5) => {
         p5.background(20);
         drawBackgroundStars();
 
+        p5.push();
+
         //Store the p5 instance in simulation variables
         SimulationVariables.p5Instance = p5;
 
@@ -61,7 +64,10 @@ export const p5Sketch: Sketch = (p5) => {
         updateBodies(SimulationVariables.simulationRunning);
 
         displayBodies();
+
+        p5.pop();
     };
+
 
     //Function to draw stars in the background
     function drawBackgroundStars() {
@@ -72,11 +78,6 @@ export const p5Sketch: Sketch = (p5) => {
 
     //Function to calculate force between bodies and update the bodies
     function updateBodies(updatePosition: boolean) {
-        //This function consists of 3 for loops
-        //1st for loop => apply forces between bodies and check for collisions
-        //2nd for loop => update the position and velocity of the bodies (if applicable), and check if bodies are offscreen
-        //3rd for loop => shift the position of the bodies all of them are offscreen
-
         //If there's only 1 body left, there's no point trying to compute forces. Simply update the body.
         if (SimulationVariables.bodies.length == 1) {
             SimulationVariables.bodies[0].update(updatePosition);
@@ -98,40 +99,6 @@ export const p5Sketch: Sketch = (p5) => {
                         SimulationVariables.bodies[i].checkCollision(SimulationVariables.bodies[j]);
                     }
                 }
-            }
-        }
-
-
-        //Update the bodies
-        //Create an arrays to store if a body is off screen
-        //If all bodies are off screen, we move all of them to the other side of the sketch
-        let bodiesOffScreen: Array<boolean> = [];
-
-        for (let i = 0; i < SimulationVariables.bodies.length; i++) {
-            //Update the offscreen array with whether this body is off screen
-            bodiesOffScreen.push(SimulationVariables.bodies[i].checkOffScreen());
-        }
-
-        //Shift the position of all bodies if all bodies are off screen, to make them reenter from the opposite side of the screen
-        if (bodiesOffScreen.every((e) => e === true)) {
-            for (let i = 0; i < SimulationVariables.bodies.length; i++) {
-                let body = SimulationVariables.bodies[i];
-
-                if (body.position.x < 0) {
-                    body.position.x += p5.width;
-                }
-                if (body.position.x > p5.width) {
-                    body.position.x -= p5.width;
-                }
-                if (body.position.y < 0) {
-                    body.position.y += p5.height;
-                }
-                if (body.position.y > p5.height) {
-                    body.position.y -= p5.height;
-                }
-
-                //Clear the prevpos array for each body so that object trails are redrawn after the body is teleported
-                body.prevPos = [];
             }
         }
     }

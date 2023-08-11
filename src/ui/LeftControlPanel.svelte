@@ -78,7 +78,7 @@
   <!-- Show path checkbox -->
   <VisibilityCheckbox
     checkboxLabel="Show path"
-    checkboxSubtextStyle="text-4xl text-green-500"
+    checkboxSubtextStyle="text-4xl text-green-400"
     checkboxSubtext="---------"
     onClick={(event) => LeftControlPanelEvents.showPathCheckboxCheckChanged(event.currentTarget)} />
 

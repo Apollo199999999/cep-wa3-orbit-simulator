@@ -54,7 +54,7 @@ export class RightControlPanelEvents {
         } else if (chosenPreset === "Sun, Planet, Moon") {
             //Sun
             SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.33, 0, [255, 255, 52])
+                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.34, 0, [255, 255, 52])
             );
 
             //Planet
@@ -77,7 +77,7 @@ export class RightControlPanelEvents {
         } else if (chosenPreset === "Sun, Planet, Planet") {
             //Sun
             SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.37, 0, [255, 255, 52])
+                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.367, 0.005, [255, 255, 52])
             );
 
             //Planet
@@ -250,6 +250,9 @@ export class RightControlPanelEvents {
                     this.removeLastBodyDataControl();
                 }
             }
+
+            //Pause the simulation
+            SimulationVariables.simulationRunning = false;
         }
     }
 
