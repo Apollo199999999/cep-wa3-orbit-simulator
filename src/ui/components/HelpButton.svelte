@@ -2,7 +2,7 @@
  <details
  class="dropdown dropdown-left dropdown-end absolute right-6 bottom-6 drop-shadow-2xl"
 >
- <summary class="btn btn-secondary">
+ <summary class="btn btn-info">
    <svg
      xmlns="http://www.w3.org/2000/svg"
      fill="none"
