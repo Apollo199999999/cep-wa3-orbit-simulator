@@ -1,4 +1,5 @@
 <script lang="ts">
+  export let checkboxChecked: boolean = true;
   export let checkboxLabel: string = "";
   export let checkboxSubtextStyle: string = "";
   export let checkboxSubtext: string = "";
@@ -16,6 +17,6 @@
       <span class={checkboxSubtextStyle}>{checkboxSubtext}</span>
     </span>
 
-    <input type="checkbox" checked={true} class="checkbox checkbox-primary" />
+    <input type="checkbox" checked={checkboxChecked} class="checkbox checkbox-primary" />
   </label>
 </div>

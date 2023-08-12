@@ -45,7 +45,7 @@
     on:input={(event) => {
       RightControlPanelEvents.bodiesNumberEditing(event.currentTarget);
     }}
-     bind:this={RightControlPanelEvents.bodiesNumberInput}
+    bind:this={RightControlPanelEvents.bodiesNumberInput}
     class="input input-bordered input-primary mt-4 mb-8 w-20"
     type="number"
     value="2"

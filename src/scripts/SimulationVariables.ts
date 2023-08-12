@@ -15,6 +15,17 @@ export class SimulationVariables {
     //Variable to store the p5 Instance from the sketch
     public static p5Instance: p5;
 
+    //Variable to store how much the canvas is zoomed in/out
+    public static canvasZoom: number = 1.0;
+
+    //Variables to store the mouseX and mouseY, relative to (0,0) of canvas and AFFECTED BY TRANSLATE AND SCALE (unlike p5 mouseX and mouseY)
+    public static mouseX: number;
+    public static mouseY: number;
+
+    //Variables to store how much the canvas was translated by when zooming
+    public static canvasTranslationX: number;
+    public static canvasTranslationY: number;
+
     //Array to store the bodies currently running in the simulation
     public static bodies: Array<Body> = [];
 

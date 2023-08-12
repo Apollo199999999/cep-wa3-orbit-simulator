@@ -75,12 +75,21 @@ export class LeftControlPanelEvents {
         SimulationVariables.showPath = showPathCheckbox.checked;
     }
 
-    //Event handler for zoom slider which controls how magnified the vectors are
-    public static zoomChanged(element: any) {
+    //Event handler to zoom in/out the canvas
+    public static canvasZoomChanged(element: any) {
         //Cast the element as a HTMLInputElement
-        let zoomSlider: HTMLInputElement = element as HTMLInputElement;
+        let canvasZoomSlider: HTMLInputElement = element as HTMLInputElement;
 
         //Update simulation variables
-        SimulationVariables.vectorMagnification = parseFloat(zoomSlider.value);
+        SimulationVariables.canvasZoom = parseFloat(canvasZoomSlider.value);
+    }
+
+    //Event handler for zoom slider which controls how magnified the vectors are
+    public static vectorZoomChanged(element: any) {
+        //Cast the element as a HTMLInputElement
+        let vectorZoomSlider: HTMLInputElement = element as HTMLInputElement;
+
+        //Update simulation variables
+        SimulationVariables.vectorMagnification = parseFloat(vectorZoomSlider.value);
     }
 }

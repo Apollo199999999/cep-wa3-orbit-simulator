@@ -57,6 +57,9 @@ export const p5Sketch: Sketch = (p5) => {
 
         p5.push();
 
+        //Zoom the canvas
+        zoomCanvas(SimulationVariables.canvasZoom);
+
         //Store the p5 instance in simulation variables
         SimulationVariables.p5Instance = p5;
 
@@ -68,6 +71,24 @@ export const p5Sketch: Sketch = (p5) => {
         p5.pop();
     };
 
+
+    function zoomCanvas(scale: number) {
+        //Translate the canvas
+        let remainingWidth: number = p5.windowWidth - 2 * SimulationVariables.CONTROL_PANEL_WIDTH - p5.width * scale;
+        let remainingHeight: number = p5.windowHeight - p5.height * scale;
+        p5.translate(remainingWidth / 2, remainingHeight / 2);
+
+        //Save the translations to SimulationVariables
+        SimulationVariables.canvasTranslationX = remainingWidth / 2;
+        SimulationVariables.canvasTranslationY = remainingHeight / 2;
+
+        //Apply scaling on the canvas
+        p5.scale(scale);
+
+        //Apply these transformations to mouseX and mouseY as well
+        SimulationVariables.mouseX = (p5.mouseX - remainingWidth / 2) / scale;
+        SimulationVariables.mouseY = (p5.mouseY - remainingHeight / 2) / scale;
+    }
 
     //Function to draw stars in the background
     function drawBackgroundStars() {
@@ -114,7 +135,9 @@ export const p5Sketch: Sketch = (p5) => {
     //Functions to control the dragging of bodies using the mouse
     p5.mouseDragged = () => {
         //To avoid dragging if mouse is over control panel, or if a dialog is currently open
-        if (p5.mouseX < p5.width && p5.mouseY < p5.height && SimulationVariables.modalDialogOpen == false) {
+        //We use p5 mouseX and mouseY instead of SimulationVariables mouseX and mouseY as we do not want the mouseX and mouseY to be affected
+        //by translate() and scale() in this case.
+        if (p5.mouseX < p5.width && p5.mouseX > 0 && p5.mouseY > 0 && p5.mouseY < p5.height && SimulationVariables.modalDialogOpen == false) {
             for (let i = 0; i < SimulationVariables.bodies.length; i++) {
                 if (
                     SimulationVariables.bodies[i].startDraggingVelocityVector() == true ||

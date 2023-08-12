@@ -58,7 +58,7 @@ export class Body {
         //or if the body is currently being dragged by the mouse
         //DO NOT DRAG THE BODY IF THE VECTOR IS BEING DRAGGED
         if (this.velocityVectorDragging == false) {
-            let bodyDistance = SimulationVariables.p5Instance.dist(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY, this.position.x, this.position.y);
+            let bodyDistance = SimulationVariables.p5Instance.dist(SimulationVariables.mouseX, SimulationVariables.mouseY, this.position.x, this.position.y);
 
             if (bodyDistance < this.size / 2 || this.bodyDragging == true) {
                 //When the user clicks on the body for the first time and drags,
@@ -66,8 +66,8 @@ export class Body {
                 //we can set dragging to true, so the user can continue dragging the body without the mouse being within bounds of the size of the body,
                 //until the user releases his mouse (where "stopDragging()" is called)
                 this.bodyDragging = true;
-                this.position.x = SimulationVariables.p5Instance.mouseX;
-                this.position.y = SimulationVariables.p5Instance.mouseY;
+                this.position.x = SimulationVariables.mouseX;
+                this.position.y = SimulationVariables.mouseY;
 
                 return true;
             }
@@ -86,8 +86,8 @@ export class Body {
 
         if (this.bodyDragging == false && SimulationVariables.showVelocityVectors == true) {
             let velocityVectorDistance = SimulationVariables.p5Instance.dist(
-                SimulationVariables.p5Instance.mouseX,
-                SimulationVariables.p5Instance.mouseY,
+                SimulationVariables.mouseX,
+                SimulationVariables.mouseY,
                 this.velocityVectorDraggablePos.x,
                 this.velocityVectorDraggablePos.y
             );
@@ -103,12 +103,12 @@ export class Body {
 
                 //Magnitude of vector should be distance between mouse position and this.position, divided by how magnified the vectors are
                 this.velocity.setMag(
-                    SimulationVariables.p5Instance.dist(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY, this.position.x, this.position.y) /
+                    SimulationVariables.p5Instance.dist(SimulationVariables.mouseX, SimulationVariables.mouseY, this.position.x, this.position.y) /
                     SimulationVariables.vectorMagnification
                 );
 
                 //Find the angle of mouseX, mouseY relative to this.position
-                let mouseVector: p5.Vector = SimulationVariables.p5Instance.createVector(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY);
+                let mouseVector: p5.Vector = SimulationVariables.p5Instance.createVector(SimulationVariables.mouseX, SimulationVariables.mouseY);
                 let angleVector: p5.Vector = mouseVector.sub(this.position);
                 this.velocity.setHeading(angleVector.heading());
 
@@ -232,6 +232,11 @@ export class Body {
             explosionGif.addClass("select-none");
 
             //Position the explosionGif 
+            //Since the position attribute of HTML elements isnt affected by the transform() and scale() p5 functions used for canvas zoom,
+            //we need to account for that when positioning the explosionGif
+            collisionX = collisionX * SimulationVariables.canvasZoom + SimulationVariables.canvasTranslationX
+            collisionY = collisionY * SimulationVariables.canvasZoom + SimulationVariables.canvasTranslationY 
+
             explosionGif.position(
                 collisionX - gifWidth / 2,
                 collisionY - gifHeight / 2
@@ -250,7 +255,7 @@ export class Body {
         //Change the fill color, depending on if the mouse is hovering over this body
         //(gives user some indication that this body is draggable)
         //However, do not change the fill color if a dialog is open
-        let distance: number = SimulationVariables.p5Instance.dist(SimulationVariables.p5Instance.mouseX, SimulationVariables.p5Instance.mouseY, this.position.x, this.position.y);
+        let distance: number = SimulationVariables.p5Instance.dist(SimulationVariables.mouseX, SimulationVariables.mouseY, this.position.x, this.position.y);
         if (distance < this.size / 2 && SimulationVariables.modalDialogOpen == false) {
             //Mouse is hovering over body, fill a darker shade
             SimulationVariables.p5Instance.fill(
