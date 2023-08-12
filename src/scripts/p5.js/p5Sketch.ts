@@ -26,7 +26,7 @@ export const p5Sketch: Sketch = (p5) => {
         //Populate bgStars array
         for (let i = 0; i < 100; i++) {
             bgStars.push(
-                new BgStar(p5.random(p5.width), p5.random(p5.height), p5.random(1, 5), p5.random(255))
+                new BgStar(p5.random(p5.width), p5.random(p5.height), p5.random(1, 5), p5.random(50, 255))
             );
         }
 

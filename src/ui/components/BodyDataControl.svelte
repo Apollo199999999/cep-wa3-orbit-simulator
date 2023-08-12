@@ -22,7 +22,7 @@
   </div>
   <div class="collapse-content">
     <!-- Body mass readouts -->
-    <p class="text-lg font-semibold">Mass</p>
+    <p class="text-lg font-semibold">Mass (1-500)</p>
     <input
       class="input input-bordered input-primary mt-3 mb-6 mass"
       style="width: 5.5em"

@@ -105,7 +105,7 @@ export class RightControlPanelEvents {
 
             //Assisted Body
             SimulationVariables.bodies.push(
-                new Body(50, 50, SimulationVariables.p5Instance.height / 2 + 130, 1.5, 0, [
+                new Body(50, SimulationVariables.p5Instance.width / 2 - 350, SimulationVariables.p5Instance.height / 2 + 130, 1.5, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
@@ -114,7 +114,7 @@ export class RightControlPanelEvents {
 
             //Assisted Body
             SimulationVariables.bodies.push(
-                new Body(50, 70, SimulationVariables.p5Instance.height / 2 + 200, 4.0, 0, [
+                new Body(50, SimulationVariables.p5Instance.width / 2 - 330, SimulationVariables.p5Instance.height / 2 + 200, 4.0, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
@@ -188,21 +188,12 @@ export class RightControlPanelEvents {
 
     public static bodiesNumberEditing(element: any) {
         //Only update the list if the value of the "number of bodies" input box is not null (duh)
-        if (
-            this.bodiesNumberInput.value != null &&
-            this.bodiesNumberInput.value != ""
-        ) {
-            //Round the value in the input box, in case the user inputs a decimal
-            this.bodiesNumberInput.value = Math.round(
-                parseFloat(this.bodiesNumberInput.value)
-            ).toString();
+        if (this.bodiesNumberInput.value != null && this.bodiesNumberInput.value != "") {
 
-            //Limit the value in the input box between 1 and 5
-            if (parseInt(this.bodiesNumberInput.value) > 5) {
-                this.bodiesNumberInput.value = "5";
-            } else if (parseInt(this.bodiesNumberInput.value) < 1) {
-                this.bodiesNumberInput.value = "1";
-            }
+            //Limit the value in the input box between 1 and 5, while also rounding it
+            let limitedNumber = Math.max(1, Math.round(parseFloat(this.bodiesNumberInput.value)))
+            limitedNumber = Math.min(limitedNumber, 5);
+            this.bodiesNumberInput.value = Math.round(limitedNumber).toString();
 
             //Get the number of bodies inputted by user
             let bodiesNumberInputValue = parseInt(this.bodiesNumberInput.value);
@@ -239,6 +230,7 @@ export class RightControlPanelEvents {
                         SimulationVariables.p5Instance.color(bodyColorArray[0], bodyColorArray[1], bodyColorArray[2]).toString()
                     );
                 }
+
             } else if (bodiesNumberInputValue < SimulationVariables.bodies.length) {
                 //Remove bodies
                 //Find out how many bodies we need to remove
@@ -272,8 +264,13 @@ export class RightControlPanelEvents {
             //Remember to round the value in the input box before updating
             //(except for velocity input boxes, because we cant exactly round a number to 2dp while the user is inputting)
             //(however, for ints, we can just disallow decimal points, which is what Math.round does)
+
             if (bodyDataInput.classList.contains("mass")) {
-                bodyDataInput.value = Math.round(parseFloat(bodyDataInput.value)).toString();
+                //Limit what the user can input as mass to between 1-500
+                let limitedMass = Math.max(1, Math.round(parseFloat(bodyDataInput.value)));
+                limitedMass = Math.min(limitedMass, 500);
+                //Set the input value as the limited mass;
+                bodyDataInput.value = Math.round(limitedMass).toString();
                 body.mass = parseInt(bodyDataInput.value);
             } else if (bodyDataInput.classList.contains("px")) {
                 bodyDataInput.value = Math.round(parseFloat(bodyDataInput.value)).toString();
