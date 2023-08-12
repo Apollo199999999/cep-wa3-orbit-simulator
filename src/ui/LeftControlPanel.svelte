@@ -60,8 +60,8 @@
     type="range"
     min="0.5"
     max="3.0"
+    step="0.1"
     value={SimulationVariables.simulationSpeed}
-    step="0.5"
     class="range range-primary mt-4" />
 
   <!-- Simulation appearance section -->
@@ -77,8 +77,8 @@
       type="range"
       min="0.2"
       max="2.0"
-      value={SimulationVariables.canvasZoom}
       step="0.1"
+      value={SimulationVariables.canvasZoom}
       class="range range-primary mt-4" />
   </div>
 
@@ -92,8 +92,8 @@
       type="range"
       min="1"
       max="100"
-      value={SimulationVariables.vectorMagnification}
       step="1"
+      value={SimulationVariables.vectorMagnification}
       class="range range-primary mt-4" />
 
     <!-- Show Force Checkbox -->
