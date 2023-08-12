@@ -108,7 +108,8 @@ export const p5Sketch: Sketch = (p5) => {
             //Iterate backwards, since there is a possibility that we are removing bodies
             for (let i = SimulationVariables.bodies.length - 1; i >= 0; i--) {
                 for (let j = SimulationVariables.bodies.length - 1; j >= 0; j--) {
-                    if (i !== j) {
+                    //Add a undefined check as well to make sure the 2 bodies being checked aren't undefined after a possible collision
+                    if (i !== j && SimulationVariables.bodies[i] != undefined && SimulationVariables.bodies[j] != undefined) {
                         //Calculate and apply gravitational force between the 2 bodies using RK4
                         let rk4: RK4Utils = new RK4Utils(SimulationVariables.bodies[i], SimulationVariables.bodies[j]);
                         rk4.RK4UpdateBodyAfterForce();
