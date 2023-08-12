@@ -67,41 +67,8 @@
   <!-- Simulation appearance section -->
   <p class="text-xl font-semibold mt-10">Simulation Appearance</p>
 
-  <!-- Show Force Checkbox -->
-  <VisibilityCheckbox
-    checkboxChecked={SimulationVariables.showGravityForce}
-    checkboxLabel="Show gravity force"
-    checkboxSubtextStyle="text-4xl text-blue-500"
-    checkboxSubtext="&#10230;"
-    onClick={(event) =>
-      LeftControlPanelEvents.showForceCheckboxCheckChanged(
-        event.currentTarget
-      )} />
-
-  <!-- Show velocity vectors checkbox -->
-  <VisibilityCheckbox
-    checkboxChecked={SimulationVariables.showVelocityVectors}
-    checkboxLabel="Show velocity vectors"
-    checkboxSubtextStyle="text-4xl text-yellow-500"
-    checkboxSubtext="&#10230;"
-    onClick={(event) =>
-      LeftControlPanelEvents.showVelocityCheckboxCheckChanged(
-        event.currentTarget
-      )} />
-
-  <!-- Show path checkbox -->
-  <VisibilityCheckbox
-    checkboxChecked={SimulationVariables.showPath}
-    checkboxLabel="Show path"
-    checkboxSubtextStyle="text-4xl text-green-400"
-    checkboxSubtext="---------"
-    onClick={(event) =>
-      LeftControlPanelEvents.showPathCheckboxCheckChanged(
-        event.currentTarget
-      )} />
-
   <!-- Zoom slider to control the zoom level of the canvas -->
-  <div class="form-control mt-4 py-2 px-1 mb-4">
+  <div class="form-control mt-4 py-2 px-1">
     <span class="text-lg">Simulation Zoom</span>
     <input
       on:input={(event) => {
@@ -116,7 +83,7 @@
   </div>
 
   <!-- Zoom slider to control how magnified the vectors are -->
-  <div class="form-control mt-4 py-2 px-1 mb-4">
+  <div class="form-control mt-4 py-2 px-1">
     <span class="text-lg">Vector Zoom</span>
     <input
       on:input={(event) => {
@@ -128,5 +95,38 @@
       value={SimulationVariables.vectorMagnification}
       step="1"
       class="range range-primary mt-4" />
+
+    <!-- Show Force Checkbox -->
+    <VisibilityCheckbox
+      checkboxChecked={SimulationVariables.showGravityForce}
+      checkboxLabel="Show gravity force"
+      checkboxSubtextStyle="text-4xl text-blue-500"
+      checkboxSubtext="&#10230;"
+      onClick={(event) =>
+        LeftControlPanelEvents.showForceCheckboxCheckChanged(
+          event.currentTarget
+        )} />
+
+    <!-- Show velocity vectors checkbox -->
+    <VisibilityCheckbox
+      checkboxChecked={SimulationVariables.showVelocityVectors}
+      checkboxLabel="Show velocity vectors"
+      checkboxSubtextStyle="text-4xl text-yellow-500"
+      checkboxSubtext="&#10230;"
+      onClick={(event) =>
+        LeftControlPanelEvents.showVelocityCheckboxCheckChanged(
+          event.currentTarget
+        )} />
+
+    <!-- Show path checkbox -->
+    <VisibilityCheckbox
+      checkboxChecked={SimulationVariables.showPath}
+      checkboxLabel="Show path"
+      checkboxSubtextStyle="text-4xl text-green-400"
+      checkboxSubtext="---------"
+      onClick={(event) =>
+        LeftControlPanelEvents.showPathCheckboxCheckChanged(
+          event.currentTarget
+        )} />
   </div>
 </div>

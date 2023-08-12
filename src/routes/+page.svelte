@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import "../app.css";
   import LeftControlPanel from "../ui/LeftControlPanel.svelte";
   import { p5Sketch } from "../scripts/p5.js/p5Sketch";
@@ -12,6 +11,8 @@
 </script>
 
 <svelte:head>
+  <title>CEP WA3 Orbit Simulator</title>
+
   <!-- Preload the explosion sound and gif -->
   <link rel="prefetch" href="/explosion.gif" as="image" type="image/gif" />
   <link rel="preload" href="/explosion.gif" as="image" type="image/gif" />
