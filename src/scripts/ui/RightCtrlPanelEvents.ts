@@ -105,7 +105,7 @@ export class RightControlPanelEvents {
 
             //Assisted Body
             SimulationVariables.bodies.push(
-                new Body(50, SimulationVariables.p5Instance.width / 2 - 350, SimulationVariables.p5Instance.height / 2 + 130, 1.5, 0, [
+                new Body(50, SimulationVariables.p5Instance.width / 2 - 350, SimulationVariables.p5Instance.height / 2 + 130, 2.0, 0, [
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
                     SimulationVariables.p5Instance.random(25, 255),
