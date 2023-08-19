@@ -106,7 +106,7 @@
       }} />
 
     <p class="text-xl ml-2 font-bold">
-      {"Graph for Body " + (bodyIndex + 1).toString()}
+      {"Graphs for Body " + (bodyIndex + 1).toString()}
     </p>
   </div>
 
