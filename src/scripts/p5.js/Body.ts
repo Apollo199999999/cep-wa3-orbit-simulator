@@ -163,10 +163,10 @@ export class Body {
             this.graphVelocityData.push(parseFloat(this.velocity.mag().toFixed(6)));
 
             //Limit the size of the graph arrays to prevent the sketch from becoming too laggy
-            if (this.graphPositionData.length > 501) {
+            if (this.graphPositionData.length > 601) {
                 this.graphPositionData.shift();
             }
-            if (this.graphVelocityData.length > 501){
+            if (this.graphVelocityData.length > 601){
                 this.graphVelocityData.shift();
             }
 
