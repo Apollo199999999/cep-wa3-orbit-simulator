@@ -1,4 +1,5 @@
 import BodyDataControl from "../../ui/components/BodyDataControl.svelte";
+import GraphWindow from "../../ui/components/GraphWindow.svelte";
 import type SimulationPresetDialog from "../../ui/components/SimulationPresetDialog.svelte";
 import { Body } from "../p5.js/Body";
 import { SimulationVariables } from "../SimulationVariables";
@@ -13,6 +14,9 @@ export class RightControlPanelEvents {
     //Variable to store the simulation preset dialog, binded from the svelte file
     public static simulationPresetDialog: SimulationPresetDialog;
 
+    //Array to store all open instances of graph windows
+    public static openedGraphWindows: Array<GraphWindow> = [];
+
     //Event handler after the right control panel loads
     public static rightControlPanelLoaded(element: any) {
         //Start updating the right control panel with the body data
@@ -21,6 +25,11 @@ export class RightControlPanelEvents {
 
     //Event handler to open dialog to load new preset
     public static simulationPresetDialogOpen(element: any) {
+        //Close all open graph windows
+        for (let i = 0; i < this.openedGraphWindows.length; i++) {
+            this.openedGraphWindows[i].$destroy();
+        }
+
         //Set modalDialogOpen = true to indicate that the dialog is open
         SimulationVariables.modalDialogOpen = true;
     }
@@ -142,6 +151,7 @@ export class RightControlPanelEvents {
         //Set modalDialogOpen = false to indicate that the dialog is no longer open
         SimulationVariables.modalDialogOpen = false;
     }
+
     //Function to add new bodylayoutcontrols
     public static addBodyDataControl(bodyIndex: number, bodyColor: string) {
         //Clone template control
@@ -348,4 +358,26 @@ export class RightControlPanelEvents {
             }
         }
     }
+
+    //Event handler when "show graph" button is clicked
+    public static showGraphBtnClicked(element: any) {
+        //Cast the calling element
+        let showGraphBtn: HTMLButtonElement = element as HTMLButtonElement;
+        let bodyIndex = showGraphBtn.dataset.bodyindex;
+
+        if (bodyIndex != undefined) {
+            //Create new graph window
+            let graphWindow: GraphWindow = new GraphWindow({
+                target: document.body,
+                props: {
+                    bodyIndex: parseInt(bodyIndex)
+                }
+            });
+
+            //Add it to graph windows array
+            this.openedGraphWindows.push(graphWindow);
+        }
+    }
+
+
 }

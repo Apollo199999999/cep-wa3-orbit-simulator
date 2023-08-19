@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { RightControlPanelEvents } from "../../scripts/ui/RightCtrlPanelEvents";
+
   export let onDataInput: any;
   export let bodyIndex: number = -1;
   export let bodyColor: string;
@@ -105,5 +107,10 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- Button to open graph window -->
+    <button class="btn btn-secondary w-full mt-4" data-bodyindex={bodyIndex.toString()} on:click={(event) => {
+      RightControlPanelEvents.showGraphBtnClicked(event.currentTarget);
+    }}>Show Graphs</button>
   </div>
 </div>

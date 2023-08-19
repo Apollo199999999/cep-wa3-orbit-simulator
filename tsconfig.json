@@ -10,7 +10,8 @@
 		"sourceMap": true,
 		"strict": true,
 		"noImplicitAny": false,
-		"noImplicitThis": false
+		"noImplicitThis": false,
+		"strictPropertyInitialization": false
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

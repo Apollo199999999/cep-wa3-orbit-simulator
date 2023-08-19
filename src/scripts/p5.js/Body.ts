@@ -20,6 +20,11 @@ export class Body {
     public rk4Velocity: p5.Vector = SimulationVariables.p5Instance.createVector(0, 0);
     public rk4Position: p5.Vector = SimulationVariables.p5Instance.createVector(0, 0);
 
+    //Arrays to plot graph data
+    public graphVelocityData: Array<number> = [];
+    public graphPositionData: Array<number> = [];
+
+
     constructor(m: number, x: number, y: number, vx: number, vy: number, fillColor: Array<number>) {
         this.mass = m;
         this.position = SimulationVariables.p5Instance.createVector(x, y);
@@ -152,6 +157,21 @@ export class Body {
             }
         }
 
+        //Push the magnitude of our position vector and velocity vector to the graph arrays so we can plot data, only if the simulation is running
+        if (SimulationVariables.simulationRunning == true) {
+            this.graphPositionData.push(parseFloat(this.position.mag().toFixed(6)));
+            this.graphVelocityData.push(parseFloat(this.velocity.mag().toFixed(6)));
+
+            //Limit the size of the graph arrays to prevent the sketch from becoming too laggy
+            if (this.graphPositionData.length > 501) {
+                this.graphPositionData.shift();
+            }
+            if (this.graphVelocityData.length > 501){
+                this.graphVelocityData.shift();
+            }
+
+        }
+
         //Push our current position into the prevPos array
         //Why not just push this.position?
         //Well, if we do, JavaScript will only push the reference to this body's current position stored in this.position,
@@ -235,7 +255,7 @@ export class Body {
             //Since the position attribute of HTML elements isnt affected by the transform() and scale() p5 functions used for canvas zoom,
             //we need to account for that when positioning the explosionGif
             collisionX = collisionX * SimulationVariables.canvasZoom + SimulationVariables.canvasTranslationX
-            collisionY = collisionY * SimulationVariables.canvasZoom + SimulationVariables.canvasTranslationY 
+            collisionY = collisionY * SimulationVariables.canvasZoom + SimulationVariables.canvasTranslationY
 
             explosionGif.position(
                 collisionX - gifWidth / 2,
