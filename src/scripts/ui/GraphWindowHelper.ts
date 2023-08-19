@@ -15,7 +15,7 @@ export class GraphWindowHelper {
             animation: false,
 
             title: {
-                text: "Position Graph for Body " + (this.bodyIndex + 1).toString(),
+                text: "Displacement Graph for Body " + (this.bodyIndex + 1).toString(),
             },
             tooltip: {
                 trigger: "axis",
@@ -34,7 +34,7 @@ export class GraphWindowHelper {
                 ).reverse(),
             },
             yAxis: {
-                name: "Position Magnitude",
+                name: "Displacement from (0, 0)",
                 nameLocation: "middle",
                 nameGap: 40,
                 scale: true,
@@ -75,7 +75,7 @@ export class GraphWindowHelper {
                 ).reverse(),
             },
             yAxis: {
-                name: "Velocity Magnitude",
+                name: "Magnitude of Velocity",
                 nameLocation: "middle",
                 nameGap: 40,
                 scale: true,

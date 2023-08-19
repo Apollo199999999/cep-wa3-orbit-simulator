@@ -119,7 +119,7 @@
       bind:this={positionTab}
       on:click={(event) => {
         positionTabClicked(event.currentTarget);
-      }}>Position</a>
+      }}>Displacement</a>
     <a
       class="tab"
       bind:this={velocityTab}
