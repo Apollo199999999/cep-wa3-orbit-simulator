@@ -40,8 +40,7 @@
       } else {
         options = graphWindowHelper.getVelocityGraphOptions();
       }
-    }
-    else {
+    } else {
       //If body doesnt exist, close this graph window
       closeBtnClicked(null);
     }
@@ -72,13 +71,12 @@
     //Change which graph to show
     showPositionGraph = false;
   }
-
 </script>
 
-<!-- Draggable DIV -->
 <div
   class="absolute bg-base-100 rounded-md border border-primary"
-  style="left: {Math.random() * 100}px; top: {Math.random() * 100}px; width: 40rem;"
+  style="left: {Math.random() * 100}px; top: {Math.random() *
+    100}px; width: 40rem;"
   bind:this={graphWindowDiv}>
   <!-- Here's a hacky workaround, since we cant call "onload" for div elements, we add a hidden img element that calls onload instead -->
   <img
@@ -89,7 +87,7 @@
       onGraphWindowLoaded(event.currentTarget);
     }} />
 
-  <!-- Include a header DIV with the same name as the draggable DIV, followed by "header" -->
+  <!-- Draggable titlebar -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
     class="flex bg-base-200 rounded-t-md text-lg w-full h-12 p-2 items-center"
@@ -109,6 +107,7 @@
     </p>
   </div>
 
+  <!-- Tabs -->
   <!-- svelte-ignore a11y-missing-attribute -->
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -127,6 +126,7 @@
       }}>Velocity</a>
   </div>
 
+  <!-- Chart -->
   <div class="w-full h-96 p-2 rounded-b-md bg-base-content overflow-x-scroll">
     <Chart {options} />
   </div>
