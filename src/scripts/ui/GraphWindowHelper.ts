@@ -34,7 +34,7 @@ export class GraphWindowHelper {
                 ).reverse(),
             },
             yAxis: {
-                name: "Position",
+                name: "Position Magnitude",
                 nameLocation: "middle",
                 nameGap: 40,
                 scale: true,
@@ -75,7 +75,7 @@ export class GraphWindowHelper {
                 ).reverse(),
             },
             yAxis: {
-                name: "Velocity Magn",
+                name: "Velocity Magnitude",
                 nameLocation: "middle",
                 nameGap: 40,
                 scale: true,
