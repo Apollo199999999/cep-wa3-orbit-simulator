@@ -30,7 +30,7 @@
   }
 
   let updateGraph = function () {
-    //Start a timer that updates the graph every frame
+    //Start a timer that updates the graph 60x a second
     setTimeout(updateGraph, 1000 / 60);
 
     if (SimulationVariables.bodies[bodyIndex] != undefined) {
@@ -49,7 +49,7 @@
 
   //Event when close button clicked
   function closeBtnClicked(element: any) {
-    //Cleanup and Remove this element from document
+    //Cleanup and remove this element from document
     options = {};
     updateGraph = function () {};
     document.body.removeChild(graphWindowDiv);
@@ -73,7 +73,6 @@
     showPositionGraph = false;
   }
 
-  //endregion
 </script>
 
 <!-- Draggable DIV -->

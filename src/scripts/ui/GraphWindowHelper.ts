@@ -51,6 +51,7 @@ export class GraphWindowHelper {
         return options;
     }
 
+    //Function that returns velocity graph options
     getVelocityGraphOptions() {
         let options: EChartsOption = {
             animation: false,
@@ -92,7 +93,7 @@ export class GraphWindowHelper {
         return options;
     }
 
-    //CODE TO ALLOW USER TO DRAG THE WINDOW
+    //CODE TO ALLOW USER TO DRAG THE GRAPHWINDOW
 
     //Code adapted from here: https://www.w3schools.com/howto/howto_js_draggable.asp
     //Position of window
