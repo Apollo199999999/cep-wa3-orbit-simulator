@@ -138,9 +138,13 @@ export class GraphWindowHelper {
         this.pos2 = this.pos4 - e.clientY;
         this.pos3 = e.clientX;
         this.pos4 = e.clientY;
-        // set the element's new position:
-        this.graphWindowDiv.style.top = this.graphWindowDiv.offsetTop - this.pos2 + "px";
-        this.graphWindowDiv.style.left = this.graphWindowDiv.offsetLeft - this.pos1 + "px";
+        // set the element's new position, preventing the div from being dragged outside the screen area
+        let top: number = Math.max(this.graphWindowDiv.offsetTop - this.pos2, 0);
+        let left: number = Math.max(this.graphWindowDiv.offsetLeft - this.pos1, 0)
+        top = Math.min(top, window.innerHeight - 100);
+        left = Math.min(left, window.innerWidth - 100);
+        this.graphWindowDiv.style.top = top + "px";
+        this.graphWindowDiv.style.left = left + "px";
     }
 
     closeDragElement(e: PointerEvent) {
