@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    position: fixed;
-    width: 100vw;
+html {
+    overflow: hidden;
     overscroll-behavior: none;
 }
 
