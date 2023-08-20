@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    position: fixed;
+    width: 100vw;
+}
+
 /* Create a custom thinner scrollbar for webkit based browsers, so that it occupies less space */
 /* width */
 ::-webkit-scrollbar {
