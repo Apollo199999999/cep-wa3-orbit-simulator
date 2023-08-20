@@ -21,7 +21,7 @@
   <link rel="preload" href="/explosion.mp3" as="audio" type="audio/mpeg" />
 </svelte:head>
 
-<div class="flex h-screen overflow-y-auto">
+<div class="flex">
   <LeftControlPanel />
   <div class="relative" style="flex: 0 0 auto;">
     <P5 {sketch} />
