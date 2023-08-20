@@ -17,7 +17,8 @@
 <!-- Right control panel (previously "Data" tab) -->
 <div
   id="rightControlPanel"
-  class="block bg-base-100 flex-1 p-4 pr-3 overflow-y-auto h-screen box-border"
+  class="block bg-base-100 flex-1 mt-4 pl-4 pr-3 overflow-y-auto"
+  style="height: calc(100vh - 2em);"
   bind:this={RightControlPanelEvents.rightControlPanelDiv}>
   <!-- Here's a hacky workaround, since we cant call "onload" for div elements, we add a hidden img element that calls onload instead -->
   <img
