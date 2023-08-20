@@ -25,7 +25,7 @@
   <LeftControlPanel />
   <div class="relative" style="flex: 0 0 auto;">
     <P5 {sketch} />
-    <HelpButton />
   </div>
+  <HelpButton />
   <RightControlPanel />
 </div>

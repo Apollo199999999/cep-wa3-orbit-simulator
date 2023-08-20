@@ -2,11 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent overscroll on mobile devices */
 html {
     overflow: hidden;
     overscroll-behavior: none;
-    height: 100vh;
-    width: 100vw;
 }
 
 /* Create a custom thinner scrollbar for webkit based browsers, so that it occupies less space */
