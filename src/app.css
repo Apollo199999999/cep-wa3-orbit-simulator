@@ -7,10 +7,6 @@ html {
     overscroll-behavior: none;
 }
 
-body {
-    max-height: 100vh;
-}
-
 /* Create a custom thinner scrollbar for webkit based browsers, so that it occupies less space */
 /* width */
 ::-webkit-scrollbar {
