@@ -5,6 +5,7 @@
 body {
     position: fixed;
     width: 100vw;
+    overscroll-behavior: none;
 }
 
 /* Create a custom thinner scrollbar for webkit based browsers, so that it occupies less space */
