@@ -9,8 +9,8 @@
 <!-- Left control panel (previously "Controls" tab) -->
 <div
   id="controlsPage"
-  class="block bg-base-100 flex-1 mt-4 px-4 overflow-y-auto"
-  style="height: calc(100vh - 2em);">
+  class="block box-border bg-base-100 p-4 h-screen overflow-y-auto"
+  style="flex: 0 0 {SimulationVariables.CONTROL_PANEL_WIDTH}px">
   <p class="text-xl font-semibold">Simulation Controls</p>
 
   <!-- Simulation play/pause panel -->

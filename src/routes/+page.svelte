@@ -23,7 +23,7 @@
 
 <div class="flex">
   <LeftControlPanel />
-  <div class="relative" style="flex: 0 0 auto;">
+  <div class="flex auto">
     <P5 {sketch} />
   </div>
   <HelpButton />

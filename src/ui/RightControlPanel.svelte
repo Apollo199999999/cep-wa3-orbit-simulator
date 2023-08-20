@@ -1,4 +1,5 @@
 <script>
+  import { SimulationVariables } from "../scripts/SimulationVariables";
   import { RightControlPanelEvents } from "../scripts/ui/RightCtrlPanelEvents";
   import SimulationPresetDialog from "./components/SimulationPresetDialog.svelte";
 
@@ -17,8 +18,8 @@
 <!-- Right control panel (previously "Data" tab) -->
 <div
   id="rightControlPanel"
-  class="block bg-base-100 flex-1 mt-4 pl-4 pr-3 overflow-y-auto"
-  style="height: calc(100vh - 2em);"
+  class="block box-border bg-base-100 p-4 pr-3 h-screen overflow-y-auto"
+  style="flex: 0 0 {SimulationVariables.CONTROL_PANEL_WIDTH}"
   bind:this={RightControlPanelEvents.rightControlPanelDiv}>
   <!-- Here's a hacky workaround, since we cant call "onload" for div elements, we add a hidden img element that calls onload instead -->
   <img
