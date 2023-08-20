@@ -4,7 +4,7 @@
 
 /* Prevent overscroll on mobile devices */
 html {
-    overscroll-behavior: contain;
+    overscroll-behavior: none;
 }
 
 /* Create a custom thinner scrollbar for webkit based browsers, so that it occupies less space */
