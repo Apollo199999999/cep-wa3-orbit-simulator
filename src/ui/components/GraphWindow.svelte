@@ -91,8 +91,8 @@
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
     class="flex bg-base-200 rounded-t-md text-lg w-full h-12 p-2 items-center"
-    on:mousedown={(event) => {
-      graphWindowHelper.titleBarOnMouseDown(event, graphWindowDiv);
+    on:pointerdown={(event) => {
+      graphWindowHelper.titleBarOnPointerDown(event, graphWindowDiv);
     }}>
     <IconButton
       toolTipText="Close"

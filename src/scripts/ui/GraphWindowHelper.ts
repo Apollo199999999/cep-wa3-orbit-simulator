@@ -106,11 +106,11 @@ export class GraphWindowHelper {
     public graphWindowDiv: HTMLDivElement;
 
     //Stores mouseup and mousemove events for dragging
-    public mouseUpEvent: (e: any) => void;
-    public mouseDownEvent: (e: any) => void;
+    public pointerUpEvent: (e: any) => void;
+    public pointerMoveEvent: (e: any) => void;
 
     //OnMouseDown event binded from html
-    titleBarOnMouseDown(e, graphWindowDiv: HTMLDivElement) {
+    titleBarOnPointerDown(e, graphWindowDiv: HTMLDivElement) {
         //Set modaldialogopen to true
         SimulationVariables.modalDialogOpen = true;
 
@@ -124,13 +124,13 @@ export class GraphWindowHelper {
         this.pos4 = e.clientY;
 
         //Add event listners for mouseup and mousemove
-        this.mouseUpEvent = (e) => this.closeDragElement(e);
-        this.mouseDownEvent = (e) => this.elementDrag(e);
-        document.addEventListener("mouseup", this.mouseUpEvent);
-        document.addEventListener("mousemove", this.mouseDownEvent);
+        this.pointerUpEvent = (e) => this.closeDragElement(e);
+        this.pointerMoveEvent = (e) => this.elementDrag(e);
+        document.addEventListener("pointerup", this.pointerUpEvent);
+        document.addEventListener("pointermove", this.pointerMoveEvent);
     }
 
-    elementDrag(e: MouseEvent) {
+    elementDrag(e: PointerEvent) {
         e = e || window.event;
         e.preventDefault();
         // calculate the new cursor position:
@@ -143,12 +143,12 @@ export class GraphWindowHelper {
         this.graphWindowDiv.style.left = this.graphWindowDiv.offsetLeft - this.pos1 + "px";
     }
 
-    closeDragElement(e: MouseEvent) {
+    closeDragElement(e: PointerEvent) {
         //Set modaldialogopen to false
         SimulationVariables.modalDialogOpen = false;
 
         // stop moving when mouse button is released:
-        document.removeEventListener("mouseup", this.mouseUpEvent);
-        document.removeEventListener("mousemove", this.mouseDownEvent);
+        document.removeEventListener("pointerup", this.pointerUpEvent);
+        document.removeEventListener("pointermove", this.pointerMoveEvent);
     }
 }
