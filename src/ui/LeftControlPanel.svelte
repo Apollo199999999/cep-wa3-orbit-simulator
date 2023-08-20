@@ -9,7 +9,7 @@
 <!-- Left control panel (previously "Controls" tab) -->
 <div
   id="controlsPage"
-  class="bg-base-100 flex-1 p-4 max-h-screen overflow-y-auto overflow-x-hidden">
+  class="bg-base-100 flex-1 p-4 max-h-screen h-screen overflow-y-auto overflow-x-hidden">
   <p class="text-xl font-semibold">Simulation Controls</p>
 
   <!-- Simulation play/pause panel -->
