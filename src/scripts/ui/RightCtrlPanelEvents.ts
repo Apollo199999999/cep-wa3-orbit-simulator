@@ -302,7 +302,7 @@ export class RightControlPanelEvents {
         //Repeatedly call this function
         setTimeout(() => {
             this.updateRightCtrlPanel();
-        }, 1000 / (60 * SimulationVariables.simulationSpeed));
+        }, 1000 / 60);
 
         //Update the number of bodyDataControls if there is a mismatch between that and the number of bodies
         //This acts as a failsafe in case something went wrong when adding/removing bodies
