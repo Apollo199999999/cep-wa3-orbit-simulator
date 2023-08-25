@@ -276,7 +276,7 @@ export class Body {
         //(gives user some indication that this body is draggable)
         //However, do not change the fill color if a dialog is open
         let distance: number = SimulationVariables.p5Instance.dist(SimulationVariables.mouseX, SimulationVariables.mouseY, this.position.x, this.position.y);
-        if (distance < this.size / 2 && SimulationVariables.modalDialogOpen == false) {
+        if (distance < this.size / 2 && SimulationVariables.disableP5Dragging == false) {
             //Mouse is hovering over body, fill a darker shade
             SimulationVariables.p5Instance.fill(
                 SimulationVariables.p5Instance.color(
@@ -297,9 +297,6 @@ export class Body {
                 this.drawVector(this.appliedForces[i], "force", SimulationVariables.vectorMagnification);
             }
         }
-
-        //Clear appliedForces array
-        this.appliedForces = [];
 
         //Draw velocity vector if applicable
         if (SimulationVariables.showVelocityVectors == true) {

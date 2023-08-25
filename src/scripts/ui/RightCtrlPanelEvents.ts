@@ -30,8 +30,8 @@ export class RightControlPanelEvents {
             this.openedGraphWindows[i].$destroy();
         }
 
-        //Set modalDialogOpen = true to indicate that the dialog is open
-        SimulationVariables.modalDialogOpen = true;
+        //Set disableP5Dragging = true to indicate that the dialog is open
+        SimulationVariables.disableP5Dragging = true;
     }
 
     //Event handler after dialog closed
@@ -148,8 +148,8 @@ export class RightControlPanelEvents {
         //Remove all bodydatacontrols so that they can be reinitialised next time the "data" page (right control panel) updates
         this.removeAllBodyDataControls();
 
-        //Set modalDialogOpen = false to indicate that the dialog is no longer open
-        SimulationVariables.modalDialogOpen = false;
+        //Set disableP5Dragging = false to indicate that the dialog is no longer open
+        SimulationVariables.disableP5Dragging = false;
     }
 
     //Function to add new bodylayoutcontrols

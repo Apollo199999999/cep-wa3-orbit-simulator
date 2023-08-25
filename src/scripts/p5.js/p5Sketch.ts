@@ -4,6 +4,7 @@ import { BgStar } from "./BgStar"
 import { Body } from "./Body"
 import { cloneDeep } from "lodash"
 import { RK4Utils } from "./RK4Utils";
+import { RightControlPanelEvents } from "../ui/RightCtrlPanelEvents";
 
 //You might be wondering why I don't have to initialise the UI class to attach event handlers or something
 //Well, all the methods for the event handlers are static, so they can be referenced from HTML easily!
@@ -16,9 +17,6 @@ export const p5Sketch: Sketch = (p5) => {
     p5.setup = () => {
         //Create canvas, leaving space for the control panels on the left and right
         p5.createCanvas(p5.windowWidth - 2 * SimulationVariables.CONTROL_PANEL_WIDTH, p5.windowHeight);
-
-        //Manually control the frame rate of the draw function, so we don't use p5.js automatic loop
-        p5.noLoop();
 
         //Store the p5 instance in simulation variables
         SimulationVariables.p5Instance = p5;
@@ -46,10 +44,13 @@ export const p5Sketch: Sketch = (p5) => {
         //Save the SimulationVariables.bodies array, in case of reset
         SimulationVariables.savedBodies = cloneDeep(SimulationVariables.bodies);
 
+        //Call the updateBodies() function once, which uses setTimeout to update in the background
+        updateBodies();
     };
+
     p5.draw = () => {
-        //Controls how often draw is called, to determine how fast the simulation runs
-        setTimeout(p5.draw, 1000 / (60 * SimulationVariables.simulationSpeed));
+        //Store the p5 instance in simulation variables
+        SimulationVariables.p5Instance = p5;
 
         //Configure background
         p5.background(20);
@@ -60,17 +61,55 @@ export const p5Sketch: Sketch = (p5) => {
         //Zoom the canvas
         zoomCanvas(SimulationVariables.canvasZoom);
 
-        //Store the p5 instance in simulation variables
-        SimulationVariables.p5Instance = p5;
-
-        //Always update the bodies, but the bodies should not apply forces if the simulation is paused
-        updateBodies(SimulationVariables.simulationRunning);
-
+        //Bodies are updated in a separate function updateBodies() that is controlled by settimeout()
+        //Display bodies
         displayBodies();
-
+        
         p5.pop();
     };
 
+
+    //Function to calculate force between bodies and update the bodies
+    function updateBodies() {
+        //Controls how often updateBodies() is called, to determine how fast the simulation runs
+        setTimeout(updateBodies, 1000 / (60 * SimulationVariables.simulationSpeed));
+
+        //If there's only 1 body left, there's no point trying to compute forces. Simply update the body.
+        if (SimulationVariables.bodies.length == 1) {
+            SimulationVariables.bodies[0].update(SimulationVariables.simulationRunning);
+        }
+        else {
+            //Calculate force between each body and apply the force
+            //Iterate backwards, since there is a possibility that we are removing bodies
+            for (let i = SimulationVariables.bodies.length - 1; i >= 0; i--) {
+                for (let j = SimulationVariables.bodies.length - 1; j >= 0; j--) {
+                    //Add a undefined check as well to make sure the 2 bodies being checked aren't undefined after a possible collision
+                    if (i !== j && SimulationVariables.bodies[i] != undefined && SimulationVariables.bodies[j] != undefined) {
+                        //Before applying new forces, clear the appliedforces array for the appliedbody
+                        SimulationVariables.bodies[j].appliedForces = [];
+
+                        //Calculate and apply gravitational force between the 2 bodies using RK4
+                        let rk4: RK4Utils = new RK4Utils(SimulationVariables.bodies[i], SimulationVariables.bodies[j]);
+                        rk4.RK4UpdateBodyAfterForce();
+
+                        //Update body with applied force
+                        SimulationVariables.bodies[j].update(SimulationVariables.simulationRunning);
+
+                        //Check if the 2 bodies have collided
+                        SimulationVariables.bodies[i].checkCollision(SimulationVariables.bodies[j]);
+                    }
+                }
+            }
+        }
+    }
+
+    //Function to display the bodies
+    function displayBodies() {
+        //Display the bodies
+        for (let i = 0; i < SimulationVariables.bodies.length; i++) {
+            SimulationVariables.bodies[i].display();
+        }
+    }
 
     function zoomCanvas(scale: number) {
         //Translate the canvas
@@ -96,49 +135,12 @@ export const p5Sketch: Sketch = (p5) => {
             bgStars[i].display();
         }
     }
-
-    //Function to calculate force between bodies and update the bodies
-    function updateBodies(updatePosition: boolean) {
-        //If there's only 1 body left, there's no point trying to compute forces. Simply update the body.
-        if (SimulationVariables.bodies.length == 1) {
-            SimulationVariables.bodies[0].update(updatePosition);
-        }
-        else {
-            //Calculate force between each body and apply the force
-            //Iterate backwards, since there is a possibility that we are removing bodies
-            for (let i = SimulationVariables.bodies.length - 1; i >= 0; i--) {
-                for (let j = SimulationVariables.bodies.length - 1; j >= 0; j--) {
-                    //Add a undefined check as well to make sure the 2 bodies being checked aren't undefined after a possible collision
-                    if (i !== j && SimulationVariables.bodies[i] != undefined && SimulationVariables.bodies[j] != undefined) {
-                        //Calculate and apply gravitational force between the 2 bodies using RK4
-                        let rk4: RK4Utils = new RK4Utils(SimulationVariables.bodies[i], SimulationVariables.bodies[j]);
-                        rk4.RK4UpdateBodyAfterForce();
-
-                        //Update body with applied force
-                        SimulationVariables.bodies[j].update(updatePosition);
-
-                        //Check if the 2 bodies have collided
-                        SimulationVariables.bodies[i].checkCollision(SimulationVariables.bodies[j]);
-                    }
-                }
-            }
-        }
-    }
-
-    //Function to display the bodies
-    function displayBodies() {
-        //Display the bodies
-        for (let i = 0; i < SimulationVariables.bodies.length; i++) {
-            SimulationVariables.bodies[i].display();
-        }
-    }
-
     //Functions to control the dragging of bodies using the mouse
     p5.mouseDragged = () => {
         //To avoid dragging if mouse is over control panel, or if a dialog is currently open
         //We use p5 mouseX and mouseY instead of SimulationVariables mouseX and mouseY as we do not want the mouseX and mouseY to be affected
         //by translate() and scale() in this case.
-        if (p5.mouseX < p5.width && p5.mouseX > 0 && p5.mouseY > 0 && p5.mouseY < p5.height && SimulationVariables.modalDialogOpen == false) {
+        if (p5.mouseX < p5.width && p5.mouseX > 0 && p5.mouseY > 0 && p5.mouseY < p5.height && SimulationVariables.disableP5Dragging == false) {
             for (let i = 0; i < SimulationVariables.bodies.length; i++) {
                 if (
                     SimulationVariables.bodies[i].startDraggingVelocityVector() == true ||

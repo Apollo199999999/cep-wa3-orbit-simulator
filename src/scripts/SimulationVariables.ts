@@ -51,5 +51,5 @@ export class SimulationVariables {
     public static vectorMagnification: number = 32;
 
     //Variable to store if a modal dialog is open, so that we can prevent interaction with the simulation if so
-    public static modalDialogOpen: boolean = false;
+    public static disableP5Dragging: boolean = false;
 }

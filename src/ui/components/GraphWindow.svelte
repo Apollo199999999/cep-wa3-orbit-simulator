@@ -22,10 +22,17 @@
   let options: EChartsOption = {};
 
   //Create new instance of GraphWindowHelper class
-  let graphWindowHelper: GraphWindowHelper = new GraphWindowHelper(bodyIndex);
+  let graphWindowHelper: GraphWindowHelper;
 
   //Event that is called when graph window loads
   function onGraphWindowLoaded(element) {
+    //Init GraphWindowHelper class
+    //The GraphWindowHelper class is used to handle all the basic functions to make this component act like a window,
+    //i.e., handling resize events and such
+    //It also handles creating graph options to be displayed
+    graphWindowHelper = new GraphWindowHelper(bodyIndex, graphWindowDiv);
+
+    //Update graph
     updateGraph();
   }
 
@@ -73,10 +80,11 @@
   }
 </script>
 
+<!-- Main div for the window, remember to set min/max width and height so user cannot break stuff by resizing the window too small/big -->
+<!-- (ying jie im looking at you) -->
 <div
-  class="absolute bg-base-100 rounded-md border border-primary"
-  style="left: {Math.random() * 100}px; top: {Math.random() *
-    100}px; width: 40rem;"
+  class="flex flex-col absolute z-[999] overflow-hidden resize bg-base-100 rounded-md border border-primary w-[40rem] h-96 min-w-[35rem] min-h-[22rem] max-w-5xl max-h-[40rem]"
+  style="left: {Math.random() * 100}px; top: {Math.random() * 100}px;"
   bind:this={graphWindowDiv}>
   <!-- Here's a hacky workaround, since we cant call "onload" for div elements, we add a hidden img element that calls onload instead -->
   <img
@@ -87,12 +95,12 @@
       onGraphWindowLoaded(event.currentTarget);
     }} />
 
-  <!-- Draggable titlebar -->
+  <!-- Draggable titlebar, bind the pointerdown event to graphwindowhelper function -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div
     class="flex bg-base-200 rounded-t-md text-lg w-full h-12 p-2 items-center"
     on:pointerdown={(event) => {
-      graphWindowHelper.titleBarOnPointerDown(event, graphWindowDiv);
+      graphWindowHelper.titleBarOnPointerDown(event);
     }}>
     <IconButton
       toolTipText="Close"
@@ -127,7 +135,7 @@
   </div>
 
   <!-- Chart -->
-  <div class="w-full h-96 p-2 rounded-b-md bg-base-content overflow-x-scroll">
+  <div class="flex-auto p-1 rounded-b-md bg-base-content">
     <Chart {options} />
   </div>
 </div>

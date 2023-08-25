@@ -16,7 +16,7 @@ export class RK4Utils {
     public constructor(exertingBody: Body, appliedBody: Body) {
         //Assign the exertingBody and appliedBody to global variables so that we can call them from all functions        
         this.exertingBody = exertingBody;
-        this.appliedBody = appliedBody
+        this.appliedBody = appliedBody;
     }
 
     //A function that uses RK4 to calculate the velocity and position of the body after gravitational force has been applied
