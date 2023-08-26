@@ -254,7 +254,8 @@ export class Body {
             //Position the explosionGif 
             //Since the position attribute of HTML elements isnt affected by the transform() and scale() p5 functions used for canvas zoom,
             //we need to account for that when positioning the explosionGif
-            collisionX = collisionX * SimulationVariables.canvasZoom + SimulationVariables.canvasTranslationX
+            //Remember to also account for the control panel width
+            collisionX = collisionX * SimulationVariables.canvasZoom + SimulationVariables.canvasTranslationX + SimulationVariables.CONTROL_PANEL_WIDTH;
             collisionY = collisionY * SimulationVariables.canvasZoom + SimulationVariables.canvasTranslationY
 
             explosionGif.position(
