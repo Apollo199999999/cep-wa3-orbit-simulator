@@ -9,7 +9,7 @@
     type LightningChart,
     AxisScrollStrategies,
   } from "@arction/lcjs";
-
+  
   //Allow a bodyIndex property to be inputted as a prop
   export let bodyIndex: number;
 
