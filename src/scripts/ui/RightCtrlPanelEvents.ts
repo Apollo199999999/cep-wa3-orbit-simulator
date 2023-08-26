@@ -14,7 +14,7 @@ export class RightControlPanelEvents {
     //Variable to store the simulation preset dialog, binded from the svelte file
     public static simulationPresetDialog: SimulationPresetDialog;
 
-    //Array to store all currently open instance of GraphWindow
+    //Variable to store the currently open instance of GraphWindow
     public static openedGraphWindow: GraphWindow | undefined;
 
     //Event handler after the right control panel loads
@@ -313,6 +313,11 @@ export class RightControlPanelEvents {
         ) {
             this.initialiseBodyDataControls();
 
+            //Close any open graph windows
+            if (this.openedGraphWindow != undefined) {
+                this.openedGraphWindow.closeWindow(null);
+            }
+
             //Update the "number of bodies" input box
             this.bodiesNumberInput.value = SimulationVariables.bodies.length.toString();
         }
@@ -380,5 +385,16 @@ export class RightControlPanelEvents {
         }
     }
 
+    //Event handler when "delete body" button is clicked
+    public static deleteBodyBtnClicked(element: any) {
+        //Cast the calling element
+        let deleteBodyBtn: HTMLButtonElement = element as HTMLButtonElement;
+        let bodyIndex = deleteBodyBtn.dataset.bodyindex;
+
+        if (bodyIndex != undefined) {
+            //Remove body
+            SimulationVariables.bodies.splice(parseInt(bodyIndex), 1);
+        }
+    }
 
 }

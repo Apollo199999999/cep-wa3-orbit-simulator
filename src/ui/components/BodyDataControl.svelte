@@ -112,5 +112,10 @@
     <button class="btn btn-secondary w-full mt-4" data-bodyindex={bodyIndex.toString()} on:click={(event) => {
       RightControlPanelEvents.showGraphBtnClicked(event.currentTarget);
     }}>Show Graphs</button>
+
+    <!-- Button to delete body -->
+    <button class="btn btn-error w-full mt-4" data-bodyindex={bodyIndex.toString()} on:click={(event) => {
+      RightControlPanelEvents.deleteBodyBtnClicked(event.currentTarget);
+    }}>Delete Body</button>
   </div>
 </div>
