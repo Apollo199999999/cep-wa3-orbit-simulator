@@ -1,15 +1,29 @@
 <script lang="ts">
   import { SimulationVariables } from "../../scripts/SimulationVariables";
   import IconButton from "./IconButton.svelte";
-  import { Chart } from "svelte-echarts";
-  import type { EChartsOption } from "echarts";
   import { GraphWindowHelper } from "../../scripts/ui/GraphWindowHelper";
+  import {
+    ChartXY,
+    lightningChart,
+    LineSeries,
+    type LightningChart,
+    AxisScrollStrategies,
+  } from "@arction/lcjs";
 
   //Allow a bodyIndex property to be inputted as a prop
   export let bodyIndex: number;
 
   //Stores HTML component for graphWindow (binded from HTML)
   let graphWindowDiv: HTMLDivElement;
+
+  //Stores the div to store the chart
+  let chartDiv: HTMLDivElement;
+
+  //Variable to store chart object
+  let lineChart: ChartXY;
+
+  //Variable to store lineseries for chart
+  let lineSeries: LineSeries;
 
   //Stores the tab items to switch between "position" and "velocity" graph
   let positionTab: HTMLAnchorElement;
@@ -18,19 +32,35 @@
   //Variable to store which graph to show
   let showPositionGraph: boolean = true;
 
-  //Stores the line graph in the canvas
-  let options: EChartsOption = {};
-
   //Create new instance of GraphWindowHelper class
   let graphWindowHelper: GraphWindowHelper;
 
   //Event that is called when graph window loads
   function onGraphWindowLoaded(element) {
+    //Create new chart
+    const container = chartDiv as HTMLDivElement;
+    lineChart = lightningChart().ChartXY({ container });
+    lineChart.setMouseInteractions(false);
+    lineChart
+      .getDefaultAxisX()
+      .setScrollStrategy(AxisScrollStrategies.progressive)
+      .setTitle("Frames elapsed")
+      .setInterval({ start: 0, end: 600, stopAxisAfter: false });
+    lineSeries = lineChart
+      .addLineSeries({
+        dataPattern: { pattern: "ProgressiveX", regularProgressiveStep: true },
+      })
+      .setDataCleaning({ minDataPointCount: 600 });
+    lineSeries.setEffect(false);
+
     //Init GraphWindowHelper class
     //The GraphWindowHelper class is used to handle all the basic functions to make this component act like a window,
     //i.e., handling resize events and such
     //It also handles creating graph options to be displayed
     graphWindowHelper = new GraphWindowHelper(bodyIndex, graphWindowDiv);
+
+    //Init pos graph
+    graphWindowHelper.initPositionGraph(lineChart, lineSeries);
 
     //Update graph
     updateGraph();
@@ -39,13 +69,12 @@
   let updateGraph = function () {
     //Start a timer that updates the graph 60x a second
     setTimeout(updateGraph, 1000 / 60);
-
     if (SimulationVariables.bodies[bodyIndex] != undefined) {
       //Show the correct graph
       if (showPositionGraph == true) {
-        options = graphWindowHelper.getPositionGraphOptions();
+        graphWindowHelper.updatePositionGraph(lineChart, lineSeries);
       } else {
-        options = graphWindowHelper.getVelocityGraphOptions();
+        graphWindowHelper.updateVelocityGraph(lineChart, lineSeries);
       }
     } else {
       //If body doesnt exist, close this graph window
@@ -56,7 +85,6 @@
   //Event when close button clicked
   function closeBtnClicked(element: any) {
     //Cleanup and remove this element from document
-    options = {};
     updateGraph = function () {};
     document.body.removeChild(graphWindowDiv);
   }
@@ -67,6 +95,9 @@
     positionTab.classList.add("tab-active");
     velocityTab.classList.remove("tab-active");
 
+    //Re init graph
+    graphWindowHelper.initPositionGraph(lineChart, lineSeries);
+
     //Change which graph to show
     showPositionGraph = true;
   }
@@ -74,6 +105,9 @@
     //Add/Remove active classes depending on tab
     positionTab.classList.remove("tab-active");
     velocityTab.classList.add("tab-active");
+
+    //Re init graph
+    graphWindowHelper.initVelocityGraph(lineChart, lineSeries);
 
     //Change which graph to show
     showPositionGraph = false;
@@ -135,7 +169,7 @@
   </div>
 
   <!-- Chart -->
-  <div class="flex-auto p-1 rounded-b-md bg-base-content">
-    <Chart {options} />
-  </div>
+  <div
+    class="flex-auto p-1 rounded-b-md bg-base-content"
+    bind:this={chartDiv} />
 </div>

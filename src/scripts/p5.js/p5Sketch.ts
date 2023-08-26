@@ -64,7 +64,7 @@ export const p5Sketch: Sketch = (p5) => {
         //Bodies are updated in a separate function updateBodies() that is controlled by settimeout()
         //Display bodies
         displayBodies();
-        
+
         p5.pop();
     };
 
@@ -76,6 +76,7 @@ export const p5Sketch: Sketch = (p5) => {
 
         //If there's only 1 body left, there's no point trying to compute forces. Simply update the body.
         if (SimulationVariables.bodies.length == 1) {
+            SimulationVariables.bodies[0].appliedForces = [];
             SimulationVariables.bodies[0].update(SimulationVariables.simulationRunning);
         }
         else {

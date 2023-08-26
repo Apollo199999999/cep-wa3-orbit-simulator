@@ -161,15 +161,6 @@ export class Body {
         if (SimulationVariables.simulationRunning == true) {
             this.graphPositionData.push(parseFloat(this.position.mag().toFixed(6)));
             this.graphVelocityData.push(parseFloat(this.velocity.mag().toFixed(6)));
-
-            //Limit the size of the graph arrays to prevent the sketch from becoming too laggy
-            if (this.graphPositionData.length > 601) {
-                this.graphPositionData.shift();
-            }
-            if (this.graphVelocityData.length > 601){
-                this.graphVelocityData.shift();
-            }
-
         }
 
         //Push our current position into the prevPos array

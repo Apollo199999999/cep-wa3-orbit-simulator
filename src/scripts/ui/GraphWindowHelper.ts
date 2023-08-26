@@ -1,5 +1,5 @@
-import type { EChartsOption } from "echarts";
 import { SimulationVariables } from "../SimulationVariables";
+import type { ChartXY, LineSeries } from "@arction/lcjs";
 
 export class GraphWindowHelper {
     //Stores the bodyIndex associated with graph window
@@ -7,34 +7,15 @@ export class GraphWindowHelper {
     //Stores HTML element of graphWindow div
     public graphWindowDiv: HTMLDivElement;
 
-    constructor(bodyIndex, graphWindowDiv) {
+    constructor(bodyIndex: number, graphWindowDiv: HTMLDivElement) {
         this.bodyIndex = bodyIndex;
         this.graphWindowDiv = graphWindowDiv;
 
-        //Create a resize monitor for the graphWindowDiv to track when its dimensions change
-        let resizeObserver = new ResizeObserver((mutations) => {
-            this.onGraphWindowResizeStart();
-        });
-
-        resizeObserver.observe(this.graphWindowDiv);
-    }
-
-    //Function that is triggered when the graph window is resized 
-    public onGraphWindowResizeStart() {
-        //Resize the echarts graph
-        //Looking at the svelte-echarts wrapper, it unfortunately does not expose the internal echarts implementation
-        //However, we can see that it has binded the resize() function of the echarts component to the "resize" event of the window,
-        //as seen here: https://github.com/search?q=repo%3Abherbruck%2Fsvelte-echarts%20resize&type=code
-        //So while this is a bit hacky, to resize the echarts graph, we have to call the window resize event
-        window.dispatchEvent(new Event('resize'));
-
-        //Also disable p5js dragging
-        SimulationVariables.disableP5Dragging = true;
-
-        //Reenable p5js dragging when the graphwindow is no longer being resized
+        //Disable p5js dragging if the user is interacting with the graph window
+        this.graphWindowDiv.addEventListener("pointerdown", (e) => SimulationVariables.disableP5Dragging = true);
         this.graphWindowDiv.addEventListener("pointerup", (e) => SimulationVariables.disableP5Dragging = false);
     }
-
+    
     //CODE TO ALLOW USER TO DRAG THE GRAPHWINDOW
     //Code adapted from here: https://www.w3schools.com/howto/howto_js_draggable.asp
     //Position of window
@@ -48,7 +29,7 @@ export class GraphWindowHelper {
     public pointerMoveEvent: (e: any) => void;
 
     //OnMouseDown event binded from html
-    titleBarOnPointerDown(e) {
+    public titleBarOnPointerDown(e) {
         //Set disableP5Dragging to true to prevent us from accidentally dragging a body while moving this window
         SimulationVariables.disableP5Dragging = true;
 
@@ -65,7 +46,7 @@ export class GraphWindowHelper {
         document.addEventListener("pointermove", this.pointerMoveEvent);
     }
 
-    elementDrag(e: PointerEvent) {
+    public elementDrag(e: PointerEvent) {
         e = e || window.event;
         e.preventDefault();
         // calculate the new cursor position:
@@ -82,7 +63,7 @@ export class GraphWindowHelper {
         this.graphWindowDiv.style.left = left + "px";
     }
 
-    closeDragElement(e: PointerEvent) {
+    public closeDragElement(e: PointerEvent) {
         //Set disableP5Dragging to false to indicate this window is no longer being dragged
         SimulationVariables.disableP5Dragging = false;
 
@@ -91,87 +72,74 @@ export class GraphWindowHelper {
         document.removeEventListener("pointermove", this.pointerMoveEvent);
     }
 
-    //Function that returns position graph options
-    getPositionGraphOptions() {
-        let options: EChartsOption = {
-            animation: false,
+    //Function that first initializes position graph
+    public initPositionGraph(lineChart: ChartXY, lineSeries: LineSeries) {
+        //Set graph settings
+        lineChart.setTitle(
+            "Displacement Graph for Body " + (this.bodyIndex + 1).toString()
+        );
+        lineChart.getDefaultAxisY().setTitle("Displacement from (0, 0)");
 
-            title: {
-                text: "Displacement Graph for Body " + (this.bodyIndex + 1).toString(),
-            },
-            tooltip: {
-                trigger: "axis",
-            },
-            xAxis: {
-                name: "Number of frames before current frame",
-                axisLabel: {
-                    interval: 99,
-                },
-                nameLocation: "middle",
-                nameGap: 30,
-                data: Array.from(
-                    Array(
-                        SimulationVariables.bodies[this.bodyIndex].graphPositionData.length
-                    ).keys()
-                ).reverse(),
-            },
-            yAxis: {
-                name: "Displacement from (0, 0)",
-                nameLocation: "middle",
-                nameGap: 35,
-                scale: true,
-            },
-            series: [
-                {
-                    name: "Position",
-                    type: "line",
-                    data: SimulationVariables.bodies[this.bodyIndex].graphPositionData,
-                },
-            ],
-        };
+        //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
+        let graphPositionData = SimulationVariables.bodies[this.bodyIndex].graphPositionData;
+        let axisLabels = Array.from(Array(graphPositionData.length).keys());
 
-        return options;
+        //Merge the 2 arrays into a key-value pair of {x,y} to be consumed by the lineChart
+        let displacementLineSeries = axisLabels.map((v, i) => [v, graphPositionData[i]]).map(([x, y]) => ({ x, y }));
+
+        //Add the data
+        lineSeries.clear();
+        lineSeries.add(displacementLineSeries);
     }
 
-    //Function that returns velocity graph options
-    getVelocityGraphOptions() {
-        let options: EChartsOption = {
-            animation: false,
+    //Function that first initializes velocity graph
+    public initVelocityGraph(lineChart: ChartXY, lineSeries: LineSeries) {
+        //Set graph settings
+        lineChart.setTitle(
+            "Velocity Graph for Body " + (this.bodyIndex + 1).toString()
+        );
+        lineChart.getDefaultAxisY().setTitle("Magnitude of Velocity");
 
-            title: {
-                text: "Velocity Graph for Body " + (this.bodyIndex + 1).toString(),
-            },
-            tooltip: {
-                trigger: "axis",
-            },
-            xAxis: {
-                name: "Number of frames before current frame",
-                axisLabel: {
-                    interval: 99,
-                },
-                nameLocation: "middle",
-                nameGap: 30,
-                data: Array.from(
-                    Array(
-                        SimulationVariables.bodies[this.bodyIndex].graphVelocityData.length
-                    ).keys()
-                ).reverse(),
-            },
-            yAxis: {
-                name: "Magnitude of Velocity",
-                nameLocation: "middle",
-                nameGap: 35,
-                scale: true,
-            },
-            series: [
-                {
-                    name: "Velocity",
-                    type: "line",
-                    data: SimulationVariables.bodies[this.bodyIndex].graphVelocityData,
-                },
-            ],
-        };
+        //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
+        let graphVelocityData = SimulationVariables.bodies[this.bodyIndex].graphVelocityData;
+        let axisLabels = Array.from(Array(graphVelocityData.length).keys());
 
-        return options;
+        //Merge the 2 arrays into a key-value pair of {x,y} to be consumed by the lineChart
+        let velocityLineSeries = axisLabels.map((v, i) => [v, graphVelocityData[i]]).map(([x, y]) => ({ x, y }));
+
+        //Add the data
+        lineSeries.clear();
+        lineSeries.add(velocityLineSeries);
+
+    }
+
+    //Function that updates position graph
+    public updatePositionGraph(lineChart: ChartXY, lineSeries: LineSeries) {
+        //Set graph settings
+        lineChart.setTitle(
+            "Displacement Graph for Body " + (this.bodyIndex + 1).toString()
+        );
+        lineChart.getDefaultAxisY().setTitle("Displacement from (0, 0)");
+
+        //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
+        let graphPositionData = SimulationVariables.bodies[this.bodyIndex].graphPositionData;
+
+        //Append the data to the chart
+        lineSeries.add({ x: graphPositionData.length - 1, y: graphPositionData[graphPositionData.length - 1] });
+    }
+
+    //Function that updates velocity graph
+    public updateVelocityGraph(lineChart: ChartXY, lineSeries: LineSeries) {
+        //Set graph settings
+        lineChart.setTitle(
+            "Velocity Graph for Body " + (this.bodyIndex + 1).toString()
+        );
+        lineChart.getDefaultAxisY().setTitle("Magnitude of Velocity");
+
+        //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
+        let graphVelocityData = SimulationVariables.bodies[this.bodyIndex].graphVelocityData;
+
+        //Append the data to the chart
+        lineSeries.add({ x: graphVelocityData.length - 1, y: graphVelocityData[graphVelocityData.length - 1] });
     }
 }
