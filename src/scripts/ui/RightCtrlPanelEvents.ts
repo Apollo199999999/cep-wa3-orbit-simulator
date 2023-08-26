@@ -14,8 +14,8 @@ export class RightControlPanelEvents {
     //Variable to store the simulation preset dialog, binded from the svelte file
     public static simulationPresetDialog: SimulationPresetDialog;
 
-    //Array to store all open instances of graph windows
-    public static openedGraphWindows: Array<GraphWindow> = [];
+    //Array to store all currently open instance of GraphWindow
+    public static openedGraphWindow: GraphWindow | undefined;
 
     //Event handler after the right control panel loads
     public static rightControlPanelLoaded(element: any) {
@@ -25,9 +25,9 @@ export class RightControlPanelEvents {
 
     //Event handler to open dialog to load new preset
     public static simulationPresetDialogOpen(element: any) {
-        //Close all open graph windows
-        for (let i = 0; i < this.openedGraphWindows.length; i++) {
-            this.openedGraphWindows[i].$destroy();
+        //Destroy any open graph window
+        if (this.openedGraphWindow != undefined) {
+            this.openedGraphWindow.closeWindow(null);
         }
 
         //Set disableP5Dragging = true to indicate that the dialog is open
@@ -366,16 +366,17 @@ export class RightControlPanelEvents {
         let bodyIndex = showGraphBtn.dataset.bodyindex;
 
         if (bodyIndex != undefined) {
-            //Create new graph window
-            let graphWindow: GraphWindow = new GraphWindow({
+            //Create new graph window after destroying any open graph windows
+            if (this.openedGraphWindow != undefined) {
+                this.openedGraphWindow.closeWindow(null);
+            }
+            this.openedGraphWindow = new GraphWindow({
                 target: document.body,
                 props: {
                     bodyIndex: parseInt(bodyIndex)
                 }
             });
 
-            //Add it to graph windows array
-            this.openedGraphWindows.push(graphWindow);
         }
     }
 

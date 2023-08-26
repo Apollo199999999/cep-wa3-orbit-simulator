@@ -9,6 +9,7 @@
     type LightningChart,
     AxisScrollStrategies,
   } from "@arction/lcjs";
+    import { RightControlPanelEvents } from "../../scripts/ui/RightCtrlPanelEvents";
   
   //Allow a bodyIndex property to be inputted as a prop
   export let bodyIndex: number;
@@ -78,14 +79,15 @@
       }
     } else {
       //If body doesnt exist, close this graph window
-      closeBtnClicked(null);
+      closeWindow(null);
     }
   };
 
   //Event when close button clicked
-  function closeBtnClicked(element: any) {
+  export function closeWindow(element: any) {
     //Cleanup and remove this element from document
     updateGraph = function () {};
+    RightControlPanelEvents.openedGraphWindow = undefined;
     document.body.removeChild(graphWindowDiv);
   }
 
@@ -141,7 +143,7 @@
       btnColor="btn-sm"
       svgIconPath="M6 18L18 6M6 6l12 12"
       onClick={(event) => {
-        closeBtnClicked(event.currentTarget);
+        closeWindow(event.currentTarget);
       }} />
 
     <p class="text-xl ml-2 font-bold">
