@@ -66,6 +66,11 @@ export const p5Sketch: Sketch = (p5) => {
         displayBodies();
 
         p5.pop();
+
+        //Update any open graph windows
+        if (RightControlPanelEvents.openedGraphWindow != undefined && RightControlPanelEvents.openedGraphWindow.checkLoaded() == true) {
+            RightControlPanelEvents.openedGraphWindow.updateGraph();
+        }
     };
 
 

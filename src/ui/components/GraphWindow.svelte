@@ -9,8 +9,8 @@
     type LightningChart,
     AxisScrollStrategies,
   } from "@arction/lcjs";
-    import { RightControlPanelEvents } from "../../scripts/ui/RightCtrlPanelEvents";
-  
+  import { RightControlPanelEvents } from "../../scripts/ui/RightCtrlPanelEvents";
+
   //Allow a bodyIndex property to be inputted as a prop
   export let bodyIndex: number;
 
@@ -35,6 +35,9 @@
 
   //Create new instance of GraphWindowHelper class
   let graphWindowHelper: GraphWindowHelper;
+
+  //Loaded variable to store if the graphwindow has completed its loading function
+  let loaded: boolean = false;
 
   //Event that is called when graph window loads
   function onGraphWindowLoaded(element) {
@@ -65,11 +68,18 @@
 
     //Update graph
     updateGraph();
+
+    //Set loaded to true
+    loaded = true
   }
 
-  let updateGraph = function () {
-    //Start a timer that updates the graph 60x a second
-    setTimeout(updateGraph, 1000 / 60);
+  //Function to check if the graphWindow is loaded, which is exported as a prop
+  export function checkLoaded() {
+    return loaded;
+  }
+
+  export function updateGraph() {
+    //The graph is updated in the draw() loop in p5Sketch
     if (SimulationVariables.bodies[bodyIndex] != undefined) {
       //Show the correct graph
       if (showPositionGraph == true) {
@@ -81,12 +91,11 @@
       //If body doesnt exist, close this graph window
       closeWindow(null);
     }
-  };
+  }
 
   //Event when close button clicked
   export function closeWindow(element: any) {
     //Cleanup and remove this element from document
-    updateGraph = function () {};
     RightControlPanelEvents.openedGraphWindow = undefined;
     document.body.removeChild(graphWindowDiv);
   }
