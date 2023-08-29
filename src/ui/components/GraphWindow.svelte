@@ -53,8 +53,7 @@
     lineSeries = lineChart
       .addLineSeries({
         dataPattern: { pattern: "ProgressiveX", regularProgressiveStep: true },
-      })
-      .setDataCleaning({ minDataPointCount: 600 });
+      });
     lineSeries.setEffect(false);
 
     //Init GraphWindowHelper class
