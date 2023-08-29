@@ -76,9 +76,9 @@ export class GraphWindowHelper {
     public initPositionGraph(lineChart: ChartXY, lineSeries: LineSeries) {
         //Set graph settings
         lineChart.setTitle(
-            "Displacement Graph for Body " + (this.bodyIndex + 1).toString()
+            "Distance Graph for Body " + (this.bodyIndex + 1).toString()
         );
-        lineChart.getDefaultAxisY().setTitle("Displacement from (0, 0)");
+        lineChart.getDefaultAxisY().setTitle("Distance from (0, 0)");
 
         //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
         let graphPositionData = SimulationVariables.bodies[this.bodyIndex].graphPositionData;
@@ -96,9 +96,9 @@ export class GraphWindowHelper {
     public initVelocityGraph(lineChart: ChartXY, lineSeries: LineSeries) {
         //Set graph settings
         lineChart.setTitle(
-            "Velocity Graph for Body " + (this.bodyIndex + 1).toString()
+            "Speed Graph for Body " + (this.bodyIndex + 1).toString()
         );
-        lineChart.getDefaultAxisY().setTitle("Magnitude of Velocity");
+        lineChart.getDefaultAxisY().setTitle("Speed");
 
         //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
         let graphVelocityData = SimulationVariables.bodies[this.bodyIndex].graphVelocityData;
@@ -117,9 +117,9 @@ export class GraphWindowHelper {
     public updatePositionGraph(lineChart: ChartXY, lineSeries: LineSeries) {
         //Set graph settings
         lineChart.setTitle(
-            "Displacement Graph for Body " + (this.bodyIndex + 1).toString()
+            "Distance Graph for Body " + (this.bodyIndex + 1).toString()
         );
-        lineChart.getDefaultAxisY().setTitle("Displacement from (0, 0)");
+        lineChart.getDefaultAxisY().setTitle("Distance from (0, 0)");
 
         //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
         let graphPositionData = SimulationVariables.bodies[this.bodyIndex].graphPositionData;
@@ -132,9 +132,9 @@ export class GraphWindowHelper {
     public updateVelocityGraph(lineChart: ChartXY, lineSeries: LineSeries) {
         //Set graph settings
         lineChart.setTitle(
-            "Velocity Graph for Body " + (this.bodyIndex + 1).toString()
+            "Speed Graph for Body " + (this.bodyIndex + 1).toString()
         );
-        lineChart.getDefaultAxisY().setTitle("Magnitude of Velocity");
+        lineChart.getDefaultAxisY().setTitle("Speed");
 
         //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
         let graphVelocityData = SimulationVariables.bodies[this.bodyIndex].graphVelocityData;

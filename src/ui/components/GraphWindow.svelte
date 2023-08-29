@@ -170,13 +170,13 @@
       bind:this={positionTab}
       on:click={(event) => {
         positionTabClicked(event.currentTarget);
-      }}>Displacement</a>
+      }}>Distance</a>
     <a
       class="tab"
       bind:this={velocityTab}
       on:click={(event) => {
         velocityTabClicked(event.currentTarget);
-      }}>Velocity</a>
+      }}>Speed</a>
   </div>
 
   <!-- Chart -->
