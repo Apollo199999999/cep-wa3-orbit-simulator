@@ -21,8 +21,8 @@ export class Body {
     public rk4Position: p5.Vector = SimulationVariables.p5Instance.createVector(0, 0);
 
     //Arrays to plot graph data
-    public graphVelocityData: Array<number> = [];
-    public graphPositionData: Array<number> = [];
+    public graphSpeedData: Array<number> = [];
+    public graphDistanceData: Array<number> = [];
 
 
     constructor(m: number, x: number, y: number, vx: number, vy: number, fillColor: Array<number>) {
@@ -159,8 +159,8 @@ export class Body {
 
         //Push the magnitude of our position vector and velocity vector to the graph arrays so we can plot data, only if the simulation is running
         if (SimulationVariables.simulationRunning == true) {
-            this.graphPositionData.push(parseFloat(this.position.mag().toFixed(6)));
-            this.graphVelocityData.push(parseFloat(this.velocity.mag().toFixed(6)));
+            this.graphDistanceData.push(parseFloat(this.position.mag().toFixed(6)));
+            this.graphSpeedData.push(parseFloat(this.velocity.mag().toFixed(6)));
         }
 
         //Push our current position into the prevPos array

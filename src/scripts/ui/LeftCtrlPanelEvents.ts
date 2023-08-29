@@ -7,13 +7,14 @@ export class LeftControlPanelEvents {
         //Stop the simulation
         SimulationVariables.simulationRunning = false;
 
-        //Clear the graph for any open graph window
-        if (SimulationVariables.openedGraphWindow != undefined && SimulationVariables.openedGraphWindow.checkLoaded() == true) {
-            SimulationVariables.openedGraphWindow.clearGraph();
-        }
-
         //Restore the initial state of the simulation by deep cloning the saved array, saved before running
         SimulationVariables.bodies = cloneDeep(SimulationVariables.savedBodies);
+
+        //Reset any open graphs
+        if (SimulationVariables.openedGraphWindow != undefined && SimulationVariables.openedGraphWindow.checkLoaded() == true) {
+            SimulationVariables.openedGraphWindow.resetGraph();
+        }
+
     }
 
     //Event handler for when the play button is clicked

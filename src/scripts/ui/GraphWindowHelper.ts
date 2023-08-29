@@ -72,8 +72,8 @@ export class GraphWindowHelper {
         document.removeEventListener("pointermove", this.pointerMoveEvent);
     }
 
-    //Function that first initializes position graph
-    public initPositionGraph(lineChart: ChartXY, lineSeries: LineSeries) {
+    //Function that first initializes distance graph
+    public initDistanceGraph(lineChart: ChartXY, lineSeries: LineSeries) {
         //Set graph settings
         lineChart.setTitle(
             "Distance Graph for Body " + (this.bodyIndex + 1).toString()
@@ -81,19 +81,19 @@ export class GraphWindowHelper {
         lineChart.getDefaultAxisY().setTitle("Distance from (0, 0)");
 
         //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
-        let graphPositionData = SimulationVariables.bodies[this.bodyIndex].graphPositionData;
-        let axisLabels = Array.from(Array(graphPositionData.length).keys());
+        let graphDistanceData = SimulationVariables.bodies[this.bodyIndex].graphDistanceData;
+        let axisLabels = Array.from(Array(graphDistanceData.length).keys());
 
         //Merge the 2 arrays into a key-value pair of {x,y} to be consumed by the lineChart
-        let displacementLineSeries = axisLabels.map((v, i) => [v, graphPositionData[i]]).map(([x, y]) => ({ x, y }));
+        let distanceLineSeries = axisLabels.map((v, i) => [v, graphDistanceData[i]]).map(([x, y]) => ({ x, y }));
 
         //Add the data
         lineSeries.clear();
-        lineSeries.add(displacementLineSeries);
+        lineSeries.add(distanceLineSeries);
     }
 
-    //Function that first initializes velocity graph
-    public initVelocityGraph(lineChart: ChartXY, lineSeries: LineSeries) {
+    //Function that first initializes speed graph
+    public initSpeedGraph(lineChart: ChartXY, lineSeries: LineSeries) {
         //Set graph settings
         lineChart.setTitle(
             "Speed Graph for Body " + (this.bodyIndex + 1).toString()
@@ -101,20 +101,20 @@ export class GraphWindowHelper {
         lineChart.getDefaultAxisY().setTitle("Speed");
 
         //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
-        let graphVelocityData = SimulationVariables.bodies[this.bodyIndex].graphVelocityData;
-        let axisLabels = Array.from(Array(graphVelocityData.length).keys());
+        let graphSpeedData = SimulationVariables.bodies[this.bodyIndex].graphSpeedData;
+        let axisLabels = Array.from(Array(graphSpeedData.length).keys());
 
         //Merge the 2 arrays into a key-value pair of {x,y} to be consumed by the lineChart
-        let velocityLineSeries = axisLabels.map((v, i) => [v, graphVelocityData[i]]).map(([x, y]) => ({ x, y }));
+        let speedLineSeries = axisLabels.map((v, i) => [v, graphSpeedData[i]]).map(([x, y]) => ({ x, y }));
 
         //Add the data
         lineSeries.clear();
-        lineSeries.add(velocityLineSeries);
+        lineSeries.add(speedLineSeries);
 
     }
 
     //Function that updates position graph
-    public updatePositionGraph(lineChart: ChartXY, lineSeries: LineSeries) {
+    public updateDistanceGraph(lineChart: ChartXY, lineSeries: LineSeries) {
         //Set graph settings
         lineChart.setTitle(
             "Distance Graph for Body " + (this.bodyIndex + 1).toString()
@@ -122,14 +122,14 @@ export class GraphWindowHelper {
         lineChart.getDefaultAxisY().setTitle("Distance from (0, 0)");
 
         //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
-        let graphPositionData = SimulationVariables.bodies[this.bodyIndex].graphPositionData;
+        let graphDistanceData = SimulationVariables.bodies[this.bodyIndex].graphDistanceData;
 
         //Append the data to the chart
-        lineSeries.add({ x: graphPositionData.length - 1, y: graphPositionData[graphPositionData.length - 1] });
+        lineSeries.add({ x: graphDistanceData.length - 1, y: graphDistanceData[graphDistanceData.length - 1] });
     }
 
     //Function that updates velocity graph
-    public updateVelocityGraph(lineChart: ChartXY, lineSeries: LineSeries) {
+    public updateSpeedGraph(lineChart: ChartXY, lineSeries: LineSeries) {
         //Set graph settings
         lineChart.setTitle(
             "Speed Graph for Body " + (this.bodyIndex + 1).toString()
@@ -137,9 +137,9 @@ export class GraphWindowHelper {
         lineChart.getDefaultAxisY().setTitle("Speed");
 
         //Create an array out of the indices of the body's graphPosition array and reverse it to act as the x axis
-        let graphVelocityData = SimulationVariables.bodies[this.bodyIndex].graphVelocityData;
+        let graphSpeedData = SimulationVariables.bodies[this.bodyIndex].graphSpeedData;
 
         //Append the data to the chart
-        lineSeries.add({ x: graphVelocityData.length - 1, y: graphVelocityData[graphVelocityData.length - 1] });
+        lineSeries.add({ x: graphSpeedData.length - 1, y: graphSpeedData[graphSpeedData.length - 1] });
     }
 }

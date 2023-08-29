@@ -111,7 +111,7 @@
     <!-- Button to open graph window -->
     <div
       class="tooltip tooltip-top w-full"
-      data-tip="Show Displacement/Velocity graphs">
+      data-tip="Show distance/speed graphs">
       <button
         class="btn btn-secondary w-full mt-4"
         data-bodyindex={bodyIndex.toString()}

@@ -63,8 +63,8 @@
     //It also handles creating graph options to be displayed
     graphWindowHelper = new GraphWindowHelper(bodyIndex, graphWindowDiv);
 
-    //Init pos graph
-    graphWindowHelper.initPositionGraph(lineChart, lineSeries);
+    //Init dist graph
+    graphWindowHelper.initDistanceGraph(lineChart, lineSeries);
 
     //Update graph
     updateGraph();
@@ -78,10 +78,13 @@
     return loaded;
   }
 
-  //Function to clear the graphWindow line series, which is exported as a prop
-  export function clearGraph() {
-    lineSeries.clear();
-    lineChart.getDefaultAxisX().setInterval({ start: 0, end: 600, stopAxisAfter: false });
+  //Function to reset the graphWindow
+  export function resetGraph() {
+    if (showPositionGraph == true) {
+      graphWindowHelper.initDistanceGraph(lineChart, lineSeries);
+    } else {
+      graphWindowHelper.initSpeedGraph(lineChart, lineSeries);
+    }
   }
 
   export function updateGraph() {
@@ -89,9 +92,9 @@
     if (SimulationVariables.bodies[bodyIndex] != undefined) {
       //Show the correct graph
       if (showPositionGraph == true) {
-        graphWindowHelper.updatePositionGraph(lineChart, lineSeries);
+        graphWindowHelper.updateDistanceGraph(lineChart, lineSeries);
       } else {
-        graphWindowHelper.updateVelocityGraph(lineChart, lineSeries);
+        graphWindowHelper.updateSpeedGraph(lineChart, lineSeries);
       }
     } else {
       //If body doesnt exist, close this graph window
@@ -113,7 +116,7 @@
     velocityTab.classList.remove("tab-active");
 
     //Re init graph
-    graphWindowHelper.initPositionGraph(lineChart, lineSeries);
+    graphWindowHelper.initDistanceGraph(lineChart, lineSeries);
 
     //Change which graph to show
     showPositionGraph = true;
@@ -124,7 +127,7 @@
     velocityTab.classList.add("tab-active");
 
     //Re init graph
-    graphWindowHelper.initVelocityGraph(lineChart, lineSeries);
+    graphWindowHelper.initSpeedGraph(lineChart, lineSeries);
 
     //Change which graph to show
     showPositionGraph = false;
