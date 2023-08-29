@@ -81,9 +81,13 @@ export const p5Sketch: Sketch = (p5) => {
         //Controls how often updateBodies() is called, to determine how fast the simulation runs
         setTimeout(updateBodies, 1000 / (60 * SimulationVariables.simulationSpeed));
 
+        //First, clear the appliedforces array for every body
+        for (let k = 0; k < SimulationVariables.bodies.length; k++) {
+            SimulationVariables.bodies[k].appliedForces = [];
+        }
+
         //If there's only 1 body left, there's no point trying to compute forces. Simply update the body.
         if (SimulationVariables.bodies.length == 1) {
-            SimulationVariables.bodies[0].appliedForces = [];
             SimulationVariables.bodies[0].update(SimulationVariables.simulationRunning);
         }
         else {
@@ -93,9 +97,6 @@ export const p5Sketch: Sketch = (p5) => {
                 for (let j = SimulationVariables.bodies.length - 1; j >= 0; j--) {
                     //Add a undefined check as well to make sure the 2 bodies being checked aren't undefined after a possible collision
                     if (i !== j && SimulationVariables.bodies[i] != undefined && SimulationVariables.bodies[j] != undefined) {
-                        //Before applying new forces, clear the appliedforces array for the appliedbody
-                        SimulationVariables.bodies[j].appliedForces = [];
-
                         //Calculate and apply gravitational force between the 2 bodies using RK4
                         let rk4: RK4Utils = new RK4Utils(SimulationVariables.bodies[i], SimulationVariables.bodies[j]);
                         rk4.RK4UpdateBodyAfterForce();
