@@ -41,7 +41,7 @@
 
   //Event that is called when graph window loads
   function onGraphWindowLoaded(element) {
-    //Create new chart
+    //Create new graph
     const container = chartDiv as HTMLDivElement;
     lineChart = lightningChart().ChartXY({ container });
     lineChart.setMouseInteractions(false);
@@ -70,12 +70,18 @@
     updateGraph();
 
     //Set loaded to true
-    loaded = true
+    loaded = true;
   }
 
   //Function to check if the graphWindow is loaded, which is exported as a prop
   export function checkLoaded() {
     return loaded;
+  }
+
+  //Function to clear the graphWindow line series, which is exported as a prop
+  export function clearGraph() {
+    lineSeries.clear();
+    lineChart.getDefaultAxisX().setInterval({ start: 0, end: 600, stopAxisAfter: false });
   }
 
   export function updateGraph() {
@@ -96,7 +102,7 @@
   //Event when close button clicked
   export function closeWindow(element: any) {
     //Cleanup and remove this element from document
-    RightControlPanelEvents.openedGraphWindow = undefined;
+    SimulationVariables.openedGraphWindow = undefined;
     document.body.removeChild(graphWindowDiv);
   }
 

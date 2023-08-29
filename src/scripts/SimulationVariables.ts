@@ -1,5 +1,6 @@
 import type { Body } from "./p5.js/Body";
 import type p5 from 'p5';
+import type GraphWindow from "../../ui/components/GraphWindow.svelte";
 
 export class SimulationVariables {
     //This file stores all simulation variables, such as whether the simulation is running, and other properties
@@ -52,4 +53,8 @@ export class SimulationVariables {
 
     //Variable to store if a modal dialog is open, so that we can prevent interaction with the simulation if so
     public static disableP5Dragging: boolean = false;
+
+    //Variable to store the currently open instance of GraphWindow
+    public static openedGraphWindow: GraphWindow | undefined;
+
 }

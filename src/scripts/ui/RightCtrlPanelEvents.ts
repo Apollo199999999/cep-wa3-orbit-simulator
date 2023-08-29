@@ -1,8 +1,9 @@
 import BodyDataControl from "../../ui/components/BodyDataControl.svelte";
-import GraphWindow from "../../ui/components/GraphWindow.svelte";
 import type SimulationPresetDialog from "../../ui/components/SimulationPresetDialog.svelte";
 import { Body } from "../p5.js/Body";
 import { SimulationVariables } from "../SimulationVariables";
+import GraphWindow from "../../ui/components/GraphWindow.svelte";
+import { SimulationPresetInitialiser } from "./SimulationPresetInitialiser";
 
 export class RightControlPanelEvents {
     //Variable to store the div for the right control panel, binded from the svelte file
@@ -14,9 +15,6 @@ export class RightControlPanelEvents {
     //Variable to store the simulation preset dialog, binded from the svelte file
     public static simulationPresetDialog: SimulationPresetDialog;
 
-    //Variable to store the currently open instance of GraphWindow
-    public static openedGraphWindow: GraphWindow | undefined;
-
     //Event handler after the right control panel loads
     public static rightControlPanelLoaded(element: any) {
         //Start updating the right control panel with the body data
@@ -26,8 +24,8 @@ export class RightControlPanelEvents {
     //Event handler to open dialog to load new preset
     public static simulationPresetDialogOpen(element: any) {
         //Destroy any open graph window
-        if (this.openedGraphWindow != undefined) {
-            this.openedGraphWindow.closeWindow(null);
+        if (SimulationVariables.openedGraphWindow != undefined) {
+            SimulationVariables.openedGraphWindow.closeWindow(null);
         }
 
         //Set disableP5Dragging = true to indicate that the dialog is open
@@ -42,107 +40,20 @@ export class RightControlPanelEvents {
         //Pause the simulation
         SimulationVariables.simulationRunning = false;
 
-        //Clear the bodies array
-        SimulationVariables.bodies = [];
+        //Init preset initializer class
+        let presetInitialiser: SimulationPresetInitialiser = new SimulationPresetInitialiser();
 
         //Depending on the selected preset, reinitialise the SimulationVariables.bodies array
         if (chosenPreset === "Sun, Planet") {
-            //Sun
-            SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.455, 0.003, [255, 255, 52])
-            );
-
-            //Planet
-            SimulationVariables.bodies.push(
-                new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 200, 2.73, 0, [
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                ])
-            );
+            presetInitialiser.initSunPlanet();
         } else if (chosenPreset === "Sun, Planet, Moon") {
-            //Sun
-            SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.337, 0.0015, [255, 255, 52])
-            );
-
-            //Planet
-            SimulationVariables.bodies.push(
-                new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 200, 2.0, 0, [
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                ])
-            );
-
-            //Moon
-            SimulationVariables.bodies.push(
-                new Body(5, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 170, 0.11, 0, [
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                ])
-            );
+            presetInitialiser.initSunPlanetMoon();
         } else if (chosenPreset === "Sun, Planet, Planet") {
-            //Sun
-            SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.367, 0.005, [255, 255, 52])
-            );
-
-            //Planet
-            SimulationVariables.bodies.push(
-                new Body(10, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 100, 2.5, 0, [
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                ])
-            );
-
-            //Planet
-            SimulationVariables.bodies.push(
-                new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 280, 1.7, 0, [
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                ])
-            );
+            presetInitialiser.initSunPlanetPlanet();
         } else if (chosenPreset === "Gravity Assist") {
-            //Sun
-            SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, 0, 0, [255, 255, 52])
-            );
-
-            //Assisted Body
-            SimulationVariables.bodies.push(
-                new Body(50, SimulationVariables.p5Instance.width / 2 - 350, SimulationVariables.p5Instance.height / 2 + 130, 2.0, 0, [
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                ])
-            );
-
-            //Assisted Body
-            SimulationVariables.bodies.push(
-                new Body(50, SimulationVariables.p5Instance.width / 2 - 330, SimulationVariables.p5Instance.height / 2 + 200, 4.0, 0, [
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                ])
-            );
+            presetInitialiser.initGravityAssist();
         } else if (chosenPreset === "Binary Star") {
-            //Star
-            SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 100, 2.0, 0, [255, 255, 52])
-            );
-
-            //Star
-            SimulationVariables.bodies.push(
-                new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 + 100, -2.0, 0, [
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                    SimulationVariables.p5Instance.random(25, 255),
-                ])
-            );
+            presetInitialiser.initBinaryStar();
         }
 
         //Remove all bodydatacontrols so that they can be reinitialised next time the "data" page (right control panel) updates
@@ -314,8 +225,8 @@ export class RightControlPanelEvents {
             this.initialiseBodyDataControls();
 
             //Close any open graph windows
-            if (this.openedGraphWindow != undefined) {
-                this.openedGraphWindow.closeWindow(null);
+            if (SimulationVariables.openedGraphWindow != undefined) {
+                SimulationVariables.openedGraphWindow.closeWindow(null);
             }
 
             //Update the "number of bodies" input box
@@ -372,10 +283,10 @@ export class RightControlPanelEvents {
 
         if (bodyIndex != undefined) {
             //Create new graph window after destroying any open graph windows
-            if (this.openedGraphWindow != undefined) {
-                this.openedGraphWindow.closeWindow(null);
+            if (SimulationVariables.openedGraphWindow != undefined) {
+                SimulationVariables.openedGraphWindow.closeWindow(null);
             }
-            this.openedGraphWindow = new GraphWindow({
+            SimulationVariables.openedGraphWindow = new GraphWindow({
                 target: document.body,
                 props: {
                     bodyIndex: parseInt(bodyIndex)

@@ -68,8 +68,8 @@ export const p5Sketch: Sketch = (p5) => {
         p5.pop();
 
         //Update any open graph windows
-        if (RightControlPanelEvents.openedGraphWindow != undefined && RightControlPanelEvents.openedGraphWindow.checkLoaded() == true) {
-            RightControlPanelEvents.openedGraphWindow.updateGraph();
+        if (SimulationVariables.openedGraphWindow != undefined && SimulationVariables.openedGraphWindow.checkLoaded() == true) {
+            SimulationVariables.openedGraphWindow.updateGraph();
         }
     };
 
