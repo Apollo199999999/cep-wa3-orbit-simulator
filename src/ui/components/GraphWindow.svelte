@@ -50,10 +50,9 @@
       .setScrollStrategy(AxisScrollStrategies.progressive)
       .setTitle("Frames elapsed")
       .setInterval({ start: 0, end: 600, stopAxisAfter: false });
-    lineSeries = lineChart
-      .addLineSeries({
-        dataPattern: { pattern: "ProgressiveX", regularProgressiveStep: true },
-      });
+    lineSeries = lineChart.addLineSeries({
+      dataPattern: { pattern: "ProgressiveX", regularProgressiveStep: true },
+    });
     lineSeries.setEffect(false);
 
     //Init GraphWindowHelper class
@@ -79,6 +78,12 @@
 
   //Function to reset the graphWindow
   export function resetGraph() {
+    //Reset graph interval
+    lineChart
+      .getDefaultAxisX()
+      .setInterval({ start: 0, end: 600, stopAxisAfter: false });
+      
+    //Reinit graph
     if (showPositionGraph == true) {
       graphWindowHelper.initDistanceGraph(lineChart, lineSeries);
     } else {
