@@ -25,7 +25,7 @@ export class Body {
     public graphDistanceData: Array<number> = [];
 
 
-    constructor(m: number, x: number, y: number, vx: number, vy: number, fillColor: Array<number>) {
+    public constructor(m: number, x: number, y: number, vx: number, vy: number, fillColor: Array<number>) {
         this.mass = m;
         this.position = SimulationVariables.p5Instance.createVector(x, y);
         this.velocity = SimulationVariables.p5Instance.createVector(vx, vy);
@@ -58,7 +58,7 @@ export class Body {
 
 
     //Function that allows the user to drag the body using the mouse
-    startDraggingBody() {
+    public startDraggingBody() {
         //To check if body is being dragged, check if mouse is within the bounds of the body,
         //or if the body is currently being dragged by the mouse
         //DO NOT DRAG THE BODY IF THE VECTOR IS BEING DRAGGED
@@ -82,7 +82,7 @@ export class Body {
     }
 
     //Function that allows the user to drag the velocity vector using the mouse
-    startDraggingVelocityVector() {
+    public startDraggingVelocityVector() {
         //Since this function is called only when mouseDragged(), there is no need to check if mouse is pressed in this function.
         //To check if the velocity vector is being dragged,
         //Check if mouse is within bounds of draggable area, or if vector is currently being dragged
@@ -125,14 +125,14 @@ export class Body {
     }
 
     //Function that stops dragging
-    stopDragging() {
+    public stopDragging() {
         //Set dragging to false
         this.bodyDragging = false;
         this.velocityVectorDragging = false;
     }
 
 
-    update(updatePosition: boolean) {
+    public update(updatePosition: boolean) {
         //Make sure to update this.size, in case our mass has changed
         this.size = 10 + this.mass * 0.25;
 
@@ -179,7 +179,7 @@ export class Body {
     }
 
     //Function to check if the body is offscreen
-    checkOffScreen() {
+    public checkOffScreen() {
         return (
             this.position.x < 0 ||
             this.position.x > SimulationVariables.p5Instance.width ||
@@ -189,7 +189,7 @@ export class Body {
     }
 
     //Function to determine if this body has collided with another body
-    checkCollision(body: Body) {
+    public checkCollision(body: Body) {
         //Get the distance between the 2 bodies
         let distance: number = SimulationVariables.p5Instance.dist(
             this.position.x,
@@ -260,7 +260,7 @@ export class Body {
             }, 200);
         }
     }
-    display() {
+    public display() {
         //Draw the body as circle
         SimulationVariables.p5Instance.noStroke();
 
@@ -311,7 +311,7 @@ export class Body {
     }
 
     //Function to draw force/velocity vectors
-    drawVector(vector: p5.Vector, type: string, multiplier: number) {
+    public drawVector(vector: p5.Vector, type: string, multiplier: number) {
         SimulationVariables.p5Instance.push();
 
         //Draw the vector at the center of the body
