@@ -59,7 +59,7 @@
     }}
     id="simulationSpeedSlider"
     type="range"
-    min="0.5"
+    min="0.2"
     max="3.0"
     step="0.1"
     value={SimulationVariables.simulationSpeed}
