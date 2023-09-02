@@ -2,7 +2,7 @@ import { SimulationVariables } from "../SimulationVariables";
 import { Body } from "../p5.js/Body";
 
 export class SimulationPresetInitialiser {
-    constructor() {
+    public constructor() {
         //Clear the SimulationVariables bodies array
         SimulationVariables.bodies = [];
     }
