@@ -88,7 +88,7 @@ export const p5Sketch: Sketch = (p5) => {
 
         //If there's only 1 body left, there's no point trying to compute forces. Simply update the body.
         if (SimulationVariables.bodies.length == 1) {
-            SimulationVariables.bodies[0].update(SimulationVariables.simulationRunning);
+            SimulationVariables.bodies[0].updateBody(SimulationVariables.simulationRunning);
         }
         else {
             //Calculate force between each body and apply the force
@@ -102,12 +102,19 @@ export const p5Sketch: Sketch = (p5) => {
                         rk4.RK4UpdateBodyAfterForce();
 
                         //Update body with applied force
-                        SimulationVariables.bodies[j].update(SimulationVariables.simulationRunning);
+                        SimulationVariables.bodies[j].updateBody(SimulationVariables.simulationRunning);
 
                         //Check if the 2 bodies have collided
                         SimulationVariables.bodies[i].checkCollision(SimulationVariables.bodies[j]);
                     }
                 }
+            }
+        }
+
+        //Update graphs for each body
+        if (SimulationVariables.simulationRunning == true) {
+            for (let i = 0; i < SimulationVariables.bodies.length; i++) {
+                SimulationVariables.bodies[i].updateGraphs();
             }
         }
     }

@@ -132,7 +132,7 @@ export class Body {
     }
 
 
-    public update(updatePosition: boolean) {
+    public updateBody(updatePosition: boolean) {
         //Make sure to update this.size, in case our mass has changed
         this.size = 10 + this.mass * 0.25;
 
@@ -157,12 +157,6 @@ export class Body {
             }
         }
 
-        //Push the magnitude of our position vector and velocity vector to the graph arrays so we can plot data, only if the simulation is running
-        if (SimulationVariables.simulationRunning == true) {
-            this.graphDistanceData.push(parseFloat(this.position.mag().toFixed(6)));
-            this.graphSpeedData.push(parseFloat(this.velocity.mag().toFixed(6)));
-        }
-
         //Push our current position into the prevPos array
         //Why not just push this.position?
         //Well, if we do, JavaScript will only push the reference to this body's current position stored in this.position,
@@ -176,6 +170,12 @@ export class Body {
         if (this.prevPos.length > 200) {
             this.prevPos.shift();
         }
+    }
+
+    public updateGraphs() {
+        //Push the magnitude of our position vector and velocity vector to the graph arrays so we can plot data
+        this.graphDistanceData.push(parseFloat(this.position.mag().toFixed(6)));
+        this.graphSpeedData.push(parseFloat(this.velocity.mag().toFixed(6)));
     }
 
     //Function to check if the body is offscreen
