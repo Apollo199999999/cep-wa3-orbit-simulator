@@ -23,7 +23,7 @@ export class RK4Utils {
     public RK4UpdateBodyAfterForce() {
         //RK4 code adapted from here: http://web.archive.org/web/20100807111842/http://gafferongames.wordpress.com/game-physics/integration-basics/
         //For more info, visit
-        //https://matthiaswang.notion.site/CEP-WA3-Orbit-Simulator-Portfolio-8c97f163c6104dd5821dd76d57a3eb98#8c803ec607de450facb3efb9cb1eb035
+        //https://matthiaswang.notion.site/CEP-WA3-Orbit-Simulator-Portfolio-8c97f163c6104dd5821dd76d57a3eb98
         //under "T3W5 Monday"
 
         //Integrate velocity and position simultaneously using RK4
