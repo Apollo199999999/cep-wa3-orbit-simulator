@@ -4,7 +4,6 @@ import { BgStar } from "./BgStar"
 import { Body } from "./Body"
 import { cloneDeep } from "lodash"
 import { RK4Utils } from "./RK4Utils";
-import { RightControlPanelEvents } from "../ui/RightCtrlPanelEvents";
 
 //You might be wondering why I don't have to initialise the UI class to attach event handlers or something
 //Well, all the methods for the event handlers are static, so they can be referenced from HTML easily!
@@ -30,7 +29,7 @@ export const p5Sketch: Sketch = (p5) => {
 
         //Initialise 2 bodies at the start of the simulation
         //First body should be spawned at the center, with a yellow color
-        SimulationVariables.bodies.push(new Body(300, p5.width / 2, p5.height / 2, -0.455, 0.003, [255, 255, 52]));
+        SimulationVariables.bodies.push(new Body(300, p5.width / 2, p5.height / 2, -0.455, 0, [255, 255, 52]));
         //Second body is to be spawned in a stable orbit, with random color
         SimulationVariables.bodies.push(
             new Body(50, p5.width / 2, p5.height / 2 - 200, 2.73, 0, [
@@ -68,8 +67,8 @@ export const p5Sketch: Sketch = (p5) => {
         p5.pop();
 
         //Update any open graph windows
-        if (SimulationVariables.openedGraphWindow != undefined 
-            && SimulationVariables.openedGraphWindow.checkLoaded() == true 
+        if (SimulationVariables.openedGraphWindow != undefined
+            && SimulationVariables.openedGraphWindow.checkLoaded() == true
             && SimulationVariables.simulationRunning == true) {
             SimulationVariables.openedGraphWindow.updateGraph();
         }
@@ -81,16 +80,13 @@ export const p5Sketch: Sketch = (p5) => {
         //Controls how often updateBodies() is called, to determine how fast the simulation runs
         setTimeout(updateBodies, 1000 / (60 * SimulationVariables.simulationSpeed));
 
-        //First, clear the appliedforces array for every body
-        for (let k = 0; k < SimulationVariables.bodies.length; k++) {
-            SimulationVariables.bodies[k].appliedForces = [];
-        }
+        //Run this whole chunk of rk4 updating multiple times to account for our rk4 timestep
+        for (let i = 0; i < 1 / SimulationVariables.rk4Timestep; i++) {
+            //First, clear the appliedforces array for every body
+            for (let k = 0; k < SimulationVariables.bodies.length; k++) {
+                SimulationVariables.bodies[k].appliedForces = [];
+            }
 
-        //If there's only 1 body left, there's no point trying to compute forces. Simply update the body.
-        if (SimulationVariables.bodies.length == 1) {
-            SimulationVariables.bodies[0].updateBody(SimulationVariables.simulationRunning);
-        }
-        else {
             //Calculate force between each body and apply the force
             //Iterate backwards, since there is a possibility that we are removing bodies
             for (let i = SimulationVariables.bodies.length - 1; i >= 0; i--) {
@@ -101,22 +97,31 @@ export const p5Sketch: Sketch = (p5) => {
                         let rk4: RK4Utils = new RK4Utils(SimulationVariables.bodies[i], SimulationVariables.bodies[j]);
                         rk4.RK4UpdateBodyAfterForce();
 
-                        //Update body with applied force
-                        SimulationVariables.bodies[j].updateBody(SimulationVariables.simulationRunning);
-
                         //Check if the 2 bodies have collided
                         SimulationVariables.bodies[i].checkCollision(SimulationVariables.bodies[j]);
                     }
                 }
             }
+
+            for (let i = 0; i < SimulationVariables.bodies.length; i++) {
+                //Update body with applied force
+                SimulationVariables.bodies[i].updateBody(SimulationVariables.simulationRunning);
+            }
         }
 
-        //Update graphs for each body
-        if (SimulationVariables.simulationRunning == true) {
-            for (let i = 0; i < SimulationVariables.bodies.length; i++) {
+        //Place this outside the rk4 loop so it only gets called once
+        for (let i = 0; i < SimulationVariables.bodies.length; i++) {
+            //Update object trails
+            SimulationVariables.bodies[i].updateTrails();
+
+            //Update graphs for each body
+            if (SimulationVariables.simulationRunning == true) {
+                //Update body with applied force
                 SimulationVariables.bodies[i].updateGraphs();
             }
         }
+
+
     }
 
     //Function to display the bodies

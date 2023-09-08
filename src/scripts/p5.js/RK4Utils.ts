@@ -28,28 +28,30 @@ export class RK4Utils {
 
         //Integrate velocity and position simultaneously using RK4
         //For ease of typing, the derivative of velocity will be referred to as "dv" and the derivative of position will be referred to as "dx"
+        let timestep = SimulationVariables.rk4Timestep;
+
         let k1_dx: p5.Vector = this.appliedBody.velocity;
         let k1_dv: p5.Vector = this.calculateGravitationalAcceleration(this.appliedBody.position);
 
-        let k2_dx: p5.Vector = p5.Vector.add(this.appliedBody.velocity, p5.Vector.mult(k1_dv, 0.5));
-        let k2_dv: p5.Vector = this.calculateGravitationalAcceleration(p5.Vector.add(this.appliedBody.position, p5.Vector.mult(k1_dx, 0.5)));
+        let k2_dx: p5.Vector = p5.Vector.add(this.appliedBody.velocity, p5.Vector.mult(k1_dv, 0.5 * timestep));
+        let k2_dv: p5.Vector = this.calculateGravitationalAcceleration(p5.Vector.add(this.appliedBody.position, p5.Vector.mult(k1_dx, 0.5 * timestep)));
 
-        let k3_dx: p5.Vector = p5.Vector.add(this.appliedBody.velocity, p5.Vector.mult(k2_dv, 0.5));
-        let k3_dv: p5.Vector = this.calculateGravitationalAcceleration(p5.Vector.add(this.appliedBody.position, p5.Vector.mult(k2_dx, 0.5)));
+        let k3_dx: p5.Vector = p5.Vector.add(this.appliedBody.velocity, p5.Vector.mult(k2_dv, 0.5 * timestep));
+        let k3_dv: p5.Vector = this.calculateGravitationalAcceleration(p5.Vector.add(this.appliedBody.position, p5.Vector.mult(k2_dx, 0.5 * timestep)));
 
-        let k4_dx: p5.Vector = p5.Vector.add(this.appliedBody.velocity, p5.Vector.mult(k3_dv, 1));
-        let k4_dv: p5.Vector = this.calculateGravitationalAcceleration(p5.Vector.add(this.appliedBody.position, p5.Vector.mult(k3_dx, 1)));
+        let k4_dx: p5.Vector = p5.Vector.add(this.appliedBody.velocity, p5.Vector.mult(k3_dv, 1 * timestep));
+        let k4_dv: p5.Vector = this.calculateGravitationalAcceleration(p5.Vector.add(this.appliedBody.position, p5.Vector.mult(k3_dx, 1 * timestep)));
 
         //Create a new vector to store the calculated rk4 position and velocity
         let rk4Position = SimulationVariables.p5Instance.createVector(0, 0);
-        rk4Position.add(k1_dx).add(k2_dx.mult(2)).add(k3_dx.mult(2)).add(k4_dx).mult(1 / 6);
+        rk4Position.add(k1_dx).add(k2_dx.mult(2)).add(k3_dx.mult(2)).add(k4_dx).mult(1 / 6).mult(timestep);
 
         let rk4Velocity = SimulationVariables.p5Instance.createVector(0, 0);
-        rk4Velocity.add(k1_dv).add(k2_dv.mult(2)).add(k3_dv.mult(2)).add(k4_dv).mult(1 / 6);
+        rk4Velocity.add(k1_dv).add(k2_dv.mult(2)).add(k3_dv.mult(2)).add(k4_dv).mult(1 / 6).mult(timestep);
 
         //Assign rk4Position and rk4Velocity to the appliedBody
-        this.appliedBody.rk4Position = rk4Position;
-        this.appliedBody.rk4Velocity = rk4Velocity;
+        this.appliedBody.rk4Position.add(rk4Position);
+        this.appliedBody.rk4Velocity.add(rk4Velocity);
 
         //Push the applied force to the appliedBody's appliedForces array
         this.appliedBody.appliedForces.push(p5.Vector.mult(this.calculateGravitationalAcceleration(this.appliedBody.position), this.appliedBody.mass))

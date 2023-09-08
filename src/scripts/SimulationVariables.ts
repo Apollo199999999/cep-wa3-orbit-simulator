@@ -1,6 +1,6 @@
 import type { Body } from "./p5.js/Body";
 import type p5 from 'p5';
-import type GraphWindow from "../../ui/components/GraphWindow.svelte";
+import type GraphWindow from "../ui/components/GraphWindow.svelte";
 
 export class SimulationVariables {
     //This file stores all simulation variables, such as whether the simulation is running, and other properties
@@ -35,6 +35,9 @@ export class SimulationVariables {
 
     //Variable to store whether the simulation is currently running, used for playing/pausing the simulation
     public static simulationRunning: boolean = false;
+
+    //Variable to store the timestep used for rk4 computation
+    public static rk4Timestep: number = 0.005;
 
     //Variable to store the simulation speed
     public static simulationSpeed: number = 1.0;

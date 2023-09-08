@@ -1,5 +1,5 @@
 //Import p5 classes
-import type p5 from 'p5';
+import p5 from 'p5';
 import { SimulationVariables } from '../SimulationVariables';
 
 export class Body {
@@ -144,19 +144,22 @@ export class Body {
             if (this.rk4Position.mag() > 0 && this.rk4Velocity.mag() > 0) {
                 this.velocity.add(this.rk4Velocity);
                 this.position.add(this.rk4Position);
-
-                //Remember to clear rk4Velocity and rk4Position after
-                this.rk4Velocity = SimulationVariables.p5Instance.createVector(0, 0);
-                this.rk4Position = SimulationVariables.p5Instance.createVector(0, 0);
             }
             else {
                 //If rk4Velocity and rk4Position are both 0, then it means it hasnt been updated since it was last cleared, 
                 //i.e., this body is the only body left in the simulation.
                 //If that is the case, velocity is constant, and it is safe to just add it to position.
-                this.position.add(this.velocity);
+                //Divide the velocity by 1 / rk4 timestep to account for the fact we are running this multiple times
+                this.position.add(p5.Vector.div(this.velocity, 1 / SimulationVariables.rk4Timestep));
             }
         }
 
+        //Remember to clear rk4Velocity and rk4Position after
+        this.rk4Velocity = SimulationVariables.p5Instance.createVector(0, 0);
+        this.rk4Position = SimulationVariables.p5Instance.createVector(0, 0);
+    }
+
+    public updateTrails() {
         //Push our current position into the prevPos array
         //Why not just push this.position?
         //Well, if we do, JavaScript will only push the reference to this body's current position stored in this.position,
@@ -170,6 +173,7 @@ export class Body {
         if (this.prevPos.length > 200) {
             this.prevPos.shift();
         }
+
     }
 
     public updateGraphs() {
@@ -260,6 +264,7 @@ export class Body {
             }, 200);
         }
     }
+
     public display() {
         //Draw the body as circle
         SimulationVariables.p5Instance.noStroke();
