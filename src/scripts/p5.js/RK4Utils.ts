@@ -49,7 +49,7 @@ export class RK4Utils {
         let rk4Velocity = SimulationVariables.p5Instance.createVector(0, 0);
         rk4Velocity.add(k1_dv).add(k2_dv.mult(2)).add(k3_dv.mult(2)).add(k4_dv).mult(1 / 6).mult(timestep);
 
-        //Assign rk4Position and rk4Velocity to the appliedBody
+        //Add rk4Position and rk4Velocity to the appliedBody
         this.appliedBody.rk4Position.add(rk4Position);
         this.appliedBody.rk4Velocity.add(rk4Velocity);
 
