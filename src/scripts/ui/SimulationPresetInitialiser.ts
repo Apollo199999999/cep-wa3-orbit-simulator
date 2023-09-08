@@ -51,12 +51,12 @@ export class SimulationPresetInitialiser {
     public initSunPlanetPlanet() {
         //Sun
         SimulationVariables.bodies.push(
-            new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.367, 0, [255, 255, 52])
+            new Body(300, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2, -0.575, 0, [255, 255, 52])
         );
 
         //Planet
         SimulationVariables.bodies.push(
-            new Body(10, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 100, 2.5, 0, [
+            new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 90, 2.80, 0, [
                 SimulationVariables.p5Instance.random(25, 255),
                 SimulationVariables.p5Instance.random(25, 255),
                 SimulationVariables.p5Instance.random(25, 255),
@@ -65,7 +65,7 @@ export class SimulationPresetInitialiser {
 
         //Planet
         SimulationVariables.bodies.push(
-            new Body(50, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 280, 1.7, 0, [
+            new Body(17, SimulationVariables.p5Instance.width / 2, SimulationVariables.p5Instance.height / 2 - 280, 1.90, 0, [
                 SimulationVariables.p5Instance.random(25, 255),
                 SimulationVariables.p5Instance.random(25, 255),
                 SimulationVariables.p5Instance.random(25, 255),
