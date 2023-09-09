@@ -1,5 +1,6 @@
 import { SimulationVariables } from "../SimulationVariables";
 import { cloneDeep } from "lodash"
+import { RightControlPanelEvents } from "./RightCtrlPanelEvents";
 
 export class LeftControlPanelEvents {
     //Event handler for when the reset button is clicked
@@ -14,6 +15,9 @@ export class LeftControlPanelEvents {
         if (SimulationVariables.openedGraphWindow != undefined && SimulationVariables.openedGraphWindow.checkLoaded() == true) {
             SimulationVariables.openedGraphWindow.resetGraph();
         }
+
+        //Reinitialize body data controls
+        RightControlPanelEvents.initialiseBodyDataControls();
 
     }
 
